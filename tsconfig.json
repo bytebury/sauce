@@ -9,7 +9,7 @@
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "esnext",
-    "types": [],
+    "types": ["vitest"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -40,5 +40,5 @@
     "skipLibCheck": true,
   },
   "include": ["./src/**/*.ts"],
-  "exclude": ["./src/**/*.test.ts"]
+  "exclude": ["./tests/**/*.ts"]
 }

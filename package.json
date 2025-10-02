@@ -4,11 +4,14 @@
   "description": "🍅 A functional base layer for any project. Sauce is a generic helper library for any sized project to help get you write cleaner code.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run --coverage",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
@@ -22,6 +25,10 @@
   },
   "homepage": "https://github.com/bytebury/sauce#readme",
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "@types/node": "^24.6.2",
+    "@vitest/coverage-v8": "^3.2.4",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }
