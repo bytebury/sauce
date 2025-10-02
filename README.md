@@ -1,6 +1,11 @@
 # sauce 🍅
 A functional base layer for any size application to help get you write cleaner code.
 
+## Installation
+```sh
+npm i --save @bytebury/sauce
+```
+
 ## Usage
 ```ts
 import { isNullOrWhitespace, title } from "@bytebury/sauce";
