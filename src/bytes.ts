@@ -14,15 +14,17 @@ export const ByteConverter = {
    * This just returns what was entered. If a decimal is passed,
    * this will take the ceil.
    */
-  bytes: (b: number): number => Math.ceil(b),
+  bytes: (b: number): Milliseconds => Math.ceil(b),
   /** Converts kilobytes to bytes. */
-  kilobytes: (kb: number): number => Math.ceil(kb * 1024),
+  kilobytes: (kb: number): Milliseconds => Math.ceil(kb * 1024),
   /** Converts megabytes to bytes. */
-  megabytes: (mb: number): number => Math.ceil(mb * 1024 ** 2),
+  megabytes: (mb: number): Milliseconds => Math.ceil(mb * 1024 ** 2),
   /** Converts gigabytes to bytes. */
-  gigabytes: (gb: number): number => Math.ceil(gb * 1024 ** 3),
+  gigabytes: (gb: number): Milliseconds => Math.ceil(gb * 1024 ** 3),
   /** Converts terabytes to bytes. */
-  terabytes: (tb: number): number => Math.ceil(tb * 1024 ** 4),
+  terabytes: (tb: number): Milliseconds => Math.ceil(tb * 1024 ** 4),
   /** Converts petabytes to bytes. */
-  petabytes: (pb: number): number => Math.ceil(pb * 1024 ** 5),
+  petabytes: (pb: number): Milliseconds => Math.ceil(pb * 1024 ** 5),
 };
+
+type Milliseconds = number;
