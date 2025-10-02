@@ -19,7 +19,7 @@ import type { Nullish } from "./types.ts";
  * isNullOrWhitespace("  .  "); // false
  */
 export function isNullOrWhitespace(text: Nullish<string>): boolean {
-	return isNull(text) || trim(text as string).length === 0;
+  return isNull(text) || trim(text as string).length === 0;
 }
 
 /**
@@ -33,7 +33,7 @@ export function isNullOrWhitespace(text: Nullish<string>): boolean {
  * @see isNullOrWhitespace
  */
 export function isNotNullOrWhitespace(text: Nullish<string>): boolean {
-	return !isNullOrWhitespace(text);
+  return !isNullOrWhitespace(text);
 }
 
 /**
@@ -44,7 +44,7 @@ export function isNotNullOrWhitespace(text: Nullish<string>): boolean {
  * [' hello ', ' world '].map(trim); // ['hello', 'world'];
  */
 export function trim(text: string): string {
-	return text.trim();
+  return text.trim();
 }
 
 /**
@@ -59,39 +59,39 @@ export function trim(text: string): string {
  * title("HELLO wORLD"); // Hello World
  */
 export function title(text: string): string {
-	return lower(text)
-		.replace(/_/g, " ")
-		.split(" ")
-		.map((word) => upper(word.charAt(0)) + word.slice(1))
-		.join(" ");
+  return lower(text)
+    .replace(/_/g, " ")
+    .split(" ")
+    .map((word) => upper(word.charAt(0)) + word.slice(1))
+    .join(" ");
 }
 
 /**
  * Convert the string to lowercase. An alias for `toLowerCase()`.
  */
 export function lower(text: string): string {
-	return text.toLowerCase();
+  return text.toLowerCase();
 }
 
 /**
  * Convert the string to uppercase. An alias for `toUpperCase()`.
  */
 export function upper(text: string): string {
-	return text.toUpperCase();
+  return text.toUpperCase();
 }
 
 /**
  * Convert the string to kebab-case.
  */
 export function kebab(text: string): string {
-	return trim(removePunctuation(lower(text))).replace(/\s+/g, "-");
+  return trim(removePunctuation(lower(text))).replace(/\s+/g, "-");
 }
 
 /**
  * Convert the string to snake_case.
  */
 export function snake(text: string): string {
-	return kebab(text).replace(/-/g, "_");
+  return kebab(text).replace(/-/g, "_");
 }
 
 /**
@@ -99,25 +99,25 @@ export function snake(text: string): string {
  * the new string.
  */
 export function alphanumeric(text: string): string {
-	return text.replace(/[^a-z0-9 ]/gi, "");
+  return text.replace(/[^a-z0-9 ]/gi, "");
 }
 
 /**
  * Removes any non-numeric characters. This includes spaces.
  */
 export function numeric(text: string): string {
-	return text.replace(/[^\d]/g, "");
+  return text.replace(/[^\d]/g, "");
 }
 
 function removePunctuation(text: string): string {
-	return text
-		.normalize("NFKD")
-		.replace(/[-_]/g, " ")
-		.replace(/\s+/g, " ")
-		.replace(/[^a-zA-Z0-9\s]/g, "");
+  return text
+    .normalize("NFKD")
+    .replace(/[-_]/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(/[^a-zA-Z0-9\s]/g, "");
 }
 
 function isNull(thing: Nullish<string>): boolean {
-	const text = String(thing).trim().toLowerCase();
-	return text === "null" || text === "undefined";
+  const text = String(thing).trim().toLowerCase();
+  return text === "null" || text === "undefined";
 }

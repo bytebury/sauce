@@ -6,7 +6,7 @@
  * isEven(5); // false
  */
 export function isEven(num: number): boolean {
-	return num % 2 === 0;
+  return num % 2 === 0;
 }
 
 /**
@@ -17,7 +17,7 @@ export function isEven(num: number): boolean {
  * isOdd(4); // false
  */
 export function isOdd(num: number): boolean {
-	return !isEven(num);
+  return !isEven(num);
 }
 
 /**

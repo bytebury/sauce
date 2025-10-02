@@ -81,13 +81,13 @@ export type Nullish<T> = T | null | undefined;
  * Represents any primitive ECMAScript value.
  */
 export type Primitive =
-	| string
-	| number
-	| boolean
-	| bigint
-	| symbol
-	| null
-	| undefined;
+  | string
+  | number
+  | boolean
+  | bigint
+  | symbol
+  | null
+  | undefined;
 
 /**
  * Represents when there can be one or many of someting

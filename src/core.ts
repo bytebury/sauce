@@ -14,10 +14,10 @@ import type { Nullish, OneOrMany, UnknownList } from "./types";
  * isEqual(false, "FALSE"); // false
  */
 export function isEqual(thing1: unknown, thing2: unknown): boolean {
-	thing1 = trim(stringify(thing1));
-	thing2 = trim(stringify(thing2));
+  thing1 = trim(stringify(thing1));
+  thing2 = trim(stringify(thing2));
 
-	return thing1 === thing2;
+  return thing1 === thing2;
 }
 
 /**
@@ -33,7 +33,7 @@ export function isEqual(thing1: unknown, thing2: unknown): boolean {
  * isNotEqual(false, "FALSE"); // false
  */
 export function isNotEqual(thing1: unknown, thing2: unknown): boolean {
-	return !isEqual(thing1, thing2);
+  return !isEqual(thing1, thing2);
 }
 
 /**
@@ -50,10 +50,10 @@ export function isNotEqual(thing1: unknown, thing2: unknown): boolean {
  * isEqualIgnoreCase(false, "FALSE"); // true
  */
 export function isEqualIgnoreCase(thing1: unknown, thing2: unknown): boolean {
-	thing1 = trim(lower(stringify(thing1)));
-	thing2 = trim(lower(stringify(thing2)));
+  thing1 = trim(lower(stringify(thing1)));
+  thing2 = trim(lower(stringify(thing2)));
 
-	return thing1 === thing2;
+  return thing1 === thing2;
 }
 
 /**
@@ -70,10 +70,10 @@ export function isEqualIgnoreCase(thing1: unknown, thing2: unknown): boolean {
  * isNotEqualIgnoreCase(false, "FALSE"); // false
  */
 export function isNotEqualIgnoreCase(
-	thing1: unknown,
-	thing2: unknown,
+  thing1: unknown,
+  thing2: unknown,
 ): boolean {
-	return !isEqualIgnoreCase(thing1, thing2);
+  return !isEqualIgnoreCase(thing1, thing2);
 }
 
 /**
@@ -89,10 +89,10 @@ export function isNotEqualIgnoreCase(
  * stringify(1); // "1"
  */
 export function stringify<T>(thing: T): string {
-	if (typeof thing === "object") {
-		return JSON.stringify(thing);
-	}
-	return String(thing);
+  if (typeof thing === "object") {
+    return JSON.stringify(thing);
+  }
+  return String(thing);
 }
 
 /**
@@ -117,19 +117,19 @@ export function stringify<T>(thing: T): string {
  * bool("Hello World"); // true
  */
 export function bool<T>(thing: OneOrMany<T>): boolean {
-	const text = trim(lower(String(thing)));
+  const text = trim(lower(String(thing)));
 
-	if (text === "false" || isNullOrWhitespace(text) || text === "0") {
-		return false;
-	}
-	return Boolean(thing);
+  if (text === "false" || isNullOrWhitespace(text) || text === "0") {
+    return false;
+  }
+  return Boolean(thing);
 }
 
 /**
  * Clones the given thing. This is an alias for `structuredClone`.
  */
 export function clone<T>(thing: T): T {
-	return structuredClone(thing);
+  return structuredClone(thing);
 }
 
 /**
@@ -149,17 +149,17 @@ export function reverse(thing: string): string;
 export function reverse<T>(thing: T[]): T[];
 export function reverse(thing: Set<unknown>): Set<unknown>;
 export function reverse<T>(
-	thing: string | Set<unknown> | T[],
+  thing: string | Set<unknown> | T[],
 ): string | Set<unknown> | T[] {
-	if (typeof thing === "string") {
-		return thing.split("").reverse().join("");
-	}
+  if (typeof thing === "string") {
+    return thing.split("").reverse().join("");
+  }
 
-	if (thing instanceof Set) {
-		return new Set([...thing].reverse());
-	}
+  if (thing instanceof Set) {
+    return new Set([...thing].reverse());
+  }
 
-	return thing.reverse();
+  return thing.reverse();
 }
 
 /**
@@ -180,21 +180,21 @@ export function isEmpty(thing: Nullish<string>): boolean;
 export function isEmpty(thing: UnknownList): boolean;
 export function isEmpty(thing: unknown): boolean;
 export function isEmpty(thing: string | UnknownList | unknown): boolean {
-	if (thing === null || thing === undefined) return true;
+  if (thing === null || thing === undefined) return true;
 
-	if (typeof thing === "string" || Array.isArray(thing)) {
-		return thing.length === 0;
-	}
+  if (typeof thing === "string" || Array.isArray(thing)) {
+    return thing.length === 0;
+  }
 
-	if (thing instanceof Map || thing instanceof Set) {
-		return thing.size === 0;
-	}
+  if (thing instanceof Map || thing instanceof Set) {
+    return thing.size === 0;
+  }
 
-	if (typeof thing === "object") {
-		return Object.keys(thing).length === 0;
-	}
+  if (typeof thing === "object") {
+    return Object.keys(thing).length === 0;
+  }
 
-	return false;
+  return false;
 }
 
 /**
@@ -216,7 +216,7 @@ export function isNotEmpty(thing: Nullish<string>): boolean;
 export function isNotEmpty(thing: UnknownList): boolean;
 export function isNotEmpty(thing: unknown): boolean;
 export function isNotEmpty(thing: string | UnknownList | unknown): boolean {
-	return !isEmpty(thing);
+  return !isEmpty(thing);
 }
 
 /**
@@ -233,8 +233,8 @@ export function isNotEmpty(thing: string | UnknownList | unknown): boolean {
  * isNull(false); // false
  */
 export function isNull<T>(thing: Nullish<T>): boolean {
-	const text = String(thing).trim().toLowerCase();
-	return text === "null" || text === "undefined";
+  const text = String(thing).trim().toLowerCase();
+  return text === "null" || text === "undefined";
 }
 
 /**
@@ -251,21 +251,21 @@ export function isNull<T>(thing: Nullish<T>): boolean {
  * isNotNull(false); // true
  */
 export function isNotNull<T>(thing: Nullish<T>): boolean {
-	return !isNull(thing);
+  return !isNull(thing);
 }
 
 /**
  * Removes duplicates from an array.
  */
 export function unique<T>(list: T[]): T[] {
-	return [...new Set(list)];
+  return [...new Set(list)];
 }
 
 /**
  * Pick a random item from an array.
  */
 export function sample<T>(list: T[]): T | undefined {
-	return list.length
-		? list[Math.floor(Math.random() * list.length)]
-		: undefined;
+  return list.length
+    ? list[Math.floor(Math.random() * list.length)]
+    : undefined;
 }
