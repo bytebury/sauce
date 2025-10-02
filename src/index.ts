@@ -4,3 +4,4 @@ export * from "./core";
 export * from "./numbers";
 export * from "./strings";
 export * from "./types";
+export * from "./option";
