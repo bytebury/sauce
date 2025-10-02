@@ -1,3 +1,5 @@
+import type { Nullish } from "./types";
+
 /**
  * Represents a thing that may or may not have a value.
  *
@@ -40,7 +42,7 @@ class Option<T> {
   }
 }
 
-export function wrap<T>(value: T): Option<T> {
+export function wrap<T>(value: Nullish<T>): Option<Nullish<T>> {
   return new Option(value);
 }
 
