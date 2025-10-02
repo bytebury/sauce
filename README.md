@@ -9,7 +9,7 @@ import type { Nullish } from "@bytebury/sauce";
 function sayHelloTo(name: Nullish<string>): void {
   if (isNullOrWhitespace(name)) {
     console.log('Hello, Guest!');
-    return
+    return;
   }
   console.log(`Hello, ${title(name))}`);
 }
