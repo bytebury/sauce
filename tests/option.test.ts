@@ -29,16 +29,3 @@ describe('#unwrapOr', () => {
   });
 });
 
-describe('#unwrapAnd', () => {
-  it('should unwrap the value and then do something to it', () => {
-    expect(wrap(3).unwrapAnd(x => x + 2)).toBe(5);
-  });
-
-  it('should be unable to unwrap the value and throw an error', () => {
-    expect(() => wrap(undefined as unknown as number).unwrapAnd(x => x + 2)).toThrowError('Trying to unwrap a value that is null or undefined');
-  });
-
-  it('should be unable to unwrap the value and throw an error', () => {
-    expect(() => wrap(null as unknown as number).unwrapAnd(x => x + 2)).toThrowError('Trying to unwrap a value that is null or undefined');
-  });
-});

@@ -22,13 +22,6 @@ class Option<T> {
     return this.value;
   }
 
-  unwrapAnd(fn: (x: T) => unknown): unknown {
-    if (this.isNone()) {
-      throw new Error("Trying to unwrap a value that is null or undefined.");
-    }
-    return fn(this.value);
-  }
-
   isSome(): boolean {
     return !this.isNone();
   }
@@ -44,7 +37,6 @@ class Option<T> {
 
   isNoneOr(fn: (x: T) => boolean): boolean {
     return this.isNone() || fn(this.value);
-
   }
 }
 
