@@ -24,6 +24,9 @@ jobs:
       - name: Generate TypeDoc documentation
         run: npm run docs
 
+      - name: Add CNAME for custom domain
+        run: echo "sauce.bytebury.com" > ./docs/CNAME
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
