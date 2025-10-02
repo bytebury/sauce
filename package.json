@@ -1,0 +1,25 @@
+{
+  "name": "sauce",
+  "version": "1.0.0",
+  "description": "🛸 A functional base layer for all things TypeScript / JavaScript. A generic helper library for any sized project to help get you write cleaner code.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bytebury/sauce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bytebury/sauce/issues"
+  },
+  "homepage": "https://github.com/bytebury/sauce#readme",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
