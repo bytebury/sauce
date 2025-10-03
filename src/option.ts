@@ -9,7 +9,42 @@ import type { Nullish } from "./types";
  * @example
  * const value = wrap(mightBeNull).unwrapOr(100);
  */
-class Option<T> {
+export interface Option<T> {
+  /**
+   * Unwrap the underlying value and returns it.
+   * If the value is `None` then this function
+   * will throw an error.
+   *
+   * @throws an error when underlying value is `None`.
+   */
+  unwrap(): T;
+  /**
+   * Unwraps the underlying value, or returns the given
+   * value if the underlying value is `None`.
+   */
+  unwrapOr(value: unknown): unknown;
+  /**
+   * Determines if the underlying value is something.
+   */
+  isSome(): boolean;
+  /**
+   * Determines if the underlying value is something,
+   * and the predicate using that same value is also
+   * true.
+   */
+  isSomeAnd(fn: (x: T) => boolean): boolean;
+  /**
+   * Determines if the underlying value is `None`.
+   */
+  isNone(): boolean;
+  /**
+   * Determines if the underlying value is `None`,
+   * or the predicate using the `Some` value is true.
+   */
+  isNoneOr(fn: (x: T) => boolean): boolean;
+}
+
+class _Option<T> implements Option<T> {
   constructor(private readonly value: T) { }
 
   unwrap(): T {
@@ -42,7 +77,11 @@ class Option<T> {
   }
 }
 
+/**
+ * Wraps a value that might be `null` or `undefined` and 
+ * turns it into an Option.
+ */
 export function wrap<T>(value: Nullish<T>): Option<Nullish<T>> {
-  return new Option(value);
+  return new _Option(value);
 }
 
