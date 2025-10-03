@@ -2,7 +2,8 @@ import { describe, it, expect } from "vitest";
 import { isEqual, isNotEqual } from "../src/core.ts";
 import { isEqualIgnoreCase, isNotEqualIgnoreCase } from "../src/core.ts";
 import { stringify, bool, reverse, sample, isEmpty, isNotEmpty } from "../src/core.ts";
-import { isNull, isNotNull, unique, clone } from "../src/core.ts";
+import { unique, clone } from "../src/core.ts";
+import { wrap } from '../src/option.ts';
 
 describe("isEqual", () => {
   it("returns true for numbers and strings that match after stringify and trim", () => {
@@ -93,7 +94,6 @@ describe("bool", () => {
     expect(bool("false")).toBe(false);
     expect(bool("0")).toBe(false);
     expect(bool("   ")).toBe(false);
-    expect(bool("null")).toBe(false);
   });
 
   it("returns true for other truthy values", () => {
@@ -139,6 +139,7 @@ describe("isEmpty", () => {
     expect(isEmpty(new Map())).toBe(true);
     expect(isEmpty(null)).toBe(true);
     expect(isEmpty(undefined)).toBe(true);
+    expect(isEmpty(wrap(null as unknown as string))).toBe(true);
   });
 
   it("detects non-empty values correctly", () => {
@@ -146,6 +147,7 @@ describe("isEmpty", () => {
     expect(isEmpty(" ")).toBe(false);
     expect(isEmpty({ a: 1 })).toBe(false);
     expect(isEmpty(new Set([1]))).toBe(false);
+    expect(isEmpty(wrap(' '))).toBe(false);
   });
 });
 
@@ -158,30 +160,6 @@ describe("isNotEmpty", () => {
   });
 });
 
-describe("isNull", () => {
-  it("detects null or undefined", () => {
-    expect(isNull(null)).toBe(true);
-    expect(isNull(undefined)).toBe(true);
-    expect(isNull("null")).toBe(true);
-    expect(isNull("undefined")).toBe(true);
-  });
-
-  it("does not detect other values as null", () => {
-    expect(isNull(0)).toBe(false);
-    expect(isNull(false)).toBe(false);
-    expect(isNull("hello")).toBe(false);
-  });
-});
-
-describe("isNotNull", () => {
-  it("returns the inverse of isNull", () => {
-    expect(isNotNull(null)).toBe(false);
-    expect(isNotNull("undefined")).toBe(false);
-    expect(isNotNull(0)).toBe(true);
-    expect(isNotNull("hello")).toBe(true);
-  });
-});
-
 describe("unique", () => {
   it("removes duplicates from arrays", () => {
     expect(unique([1, 2, 2, 3, 3, 3])).toEqual([1, 2, 3]);
@@ -191,12 +169,12 @@ describe("unique", () => {
 
 describe("sample", () => {
   it("returns undefined for empty array", () => {
-    expect(sample([])).toBeUndefined();
+    expect(sample([]).isNone()).toBe(true);
   });
 
   it("returns an element from the array", () => {
     const arr = [1, 2, 3];
-    const result = sample(arr);
+    const result = sample(arr).unwrap();
     expect(arr).toContain(result);
   });
 
@@ -204,7 +182,7 @@ describe("sample", () => {
     const arr = [1, 2, 3];
     const seen = new Set<number>();
     for (let i = 0; i < 50; i++) {
-      seen.add(sample(arr)!);
+      seen.add(sample(arr).unwrap());
     }
     expect(seen.size).toBe(arr.length);
   });

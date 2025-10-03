@@ -1,39 +1,16 @@
-import type { Nullish } from "./types.ts";
-
 /**
- * Determines if the string is null or empty, or comprised only of
- * whitespace.
- *
- * @remarks
- * Note that the strings `"null"` and `"undefined"` are
- * considered `null` and `undefined` respectively.
- *
- * @see isNotNullOrWhitespace
- *
- * @example
- * isNullOrWhitespace(null); // true
- * isNullOrWhitespace(undefined); // true
- * isNullOrWhitespace("null"); // true
- * isNullOrWhitespace("   "); // true
- * isNullOrWhitespace("Hello World"); // false
- * isNullOrWhitespace("  .  "); // false
+ * Determines if the given text is only comprised of whitespace.
  */
-export function isNullOrWhitespace(text: Nullish<string>): boolean {
-  return isNull(text) || trim(text as string).length === 0;
+export function isWhitespace(text: string): boolean {
+  return trim(text).length === 0;
 }
 
 /**
- * Determines if the string has some value that is not just whitespace.
- * This is the inverse of `isNullOrWhitespace`.
- *
- * @remarks
- * Note that the strings `"null"` and `"undefined"` are
- * considered `null` and `undefined` respectively.
- *
- * @see isNullOrWhitespace
+ * Determines if the given text is not only comprised
+ * of whitespace.
  */
-export function isNotNullOrWhitespace(text: Nullish<string>): boolean {
-  return !isNullOrWhitespace(text);
+export function isNotWhitespace(text: string): boolean {
+  return !isWhitespace(text);
 }
 
 /**
@@ -117,7 +94,3 @@ function removePunctuation(text: string): string {
     .replace(/[^a-zA-Z0-9\s]/g, "");
 }
 
-function isNull(thing: Nullish<string>): boolean {
-  const text = String(thing).trim().toLowerCase();
-  return text === "null" || text === "undefined";
-}

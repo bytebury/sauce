@@ -73,11 +73,6 @@ export type UnknownSet = Set<unknown>;
 export type UnknownMap = Map<unknown, unknown>;
 
 /**
- * Represents something that may or may not have a value.
- */
-export type Nullish<T> = T | null | undefined;
-
-/**
  * Represents any primitive ECMAScript value.
  */
 export type Primitive =

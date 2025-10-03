@@ -1,5 +1,6 @@
-import { isNullOrWhitespace, lower, trim } from "./strings";
-import type { Nullish, OneOrMany, UnknownList } from "./types";
+import { lower, trim, isWhitespace } from "./strings";
+import type { OneOrMany, UnknownList } from "./types";
+import { OptionConstructor, wrap, type Option } from './option';
 
 /**
  * Compares two things by turning them into strings, trimming them,
@@ -119,7 +120,7 @@ export function stringify<T>(thing: T): string {
 export function bool<T>(thing: OneOrMany<T>): boolean {
   const text = trim(lower(String(thing)));
 
-  if (text === "false" || isNullOrWhitespace(text) || text === "0") {
+  if (text === "false" || wrap(text).isNoneOr(isWhitespace) || text === "0") {
     return false;
   }
   return Boolean(thing);
@@ -176,10 +177,11 @@ export function reverse<T>(
  * isEmpty({}); // true
  * isEmpty(new Map()); // true
  */
-export function isEmpty(thing: Nullish<string>): boolean;
+export function isEmpty(thing: Option<string>): boolean;
 export function isEmpty(thing: UnknownList): boolean;
 export function isEmpty(thing: unknown): boolean;
 export function isEmpty(thing: string | UnknownList | unknown): boolean {
+  if (thing instanceof OptionConstructor && thing.isNone()) return true;
   if (thing === null || thing === undefined) return true;
 
   if (typeof thing === "string" || Array.isArray(thing)) {
@@ -212,46 +214,11 @@ export function isEmpty(thing: string | UnknownList | unknown): boolean {
  * isNotEmpty({}); // false
  * isNotEmpty(new Map()); // false
  */
-export function isNotEmpty(thing: Nullish<string>): boolean;
+export function isNotEmpty(thing: Option<string>): boolean;
 export function isNotEmpty(thing: UnknownList): boolean;
 export function isNotEmpty(thing: unknown): boolean;
 export function isNotEmpty(thing: string | UnknownList | unknown): boolean {
   return !isEmpty(thing);
-}
-
-/**
- * Determines if the given thing is null.
- *
- * Something is null if the string representation is `"null"` or `"undefined"`.
- *
- * @example
- * isNull(null); // true
- * isNull("NULL"); // true
- * isNull("undefined"); // true
- * isNull(undefined); // true
- * isNull(0); // false
- * isNull(false); // false
- */
-export function isNull<T>(thing: Nullish<T>): boolean {
-  const text = String(thing).trim().toLowerCase();
-  return text === "null" || text === "undefined";
-}
-
-/**
- * Determines if the given thing is null.
- *
- * Something is null if the string representation is `"null"` or `"undefined"`.
- *
- * @example
- * isNotNull(null); // false
- * isNotNull("NULL"); // false
- * isNotNull("undefined"); // false
- * isNotNull(undefined); // false
- * isNotNull(0); // true
- * isNotNull(false); // true
- */
-export function isNotNull<T>(thing: Nullish<T>): boolean {
-  return !isNull(thing);
 }
 
 /**
@@ -264,8 +231,8 @@ export function unique<T>(list: T[]): T[] {
 /**
  * Pick a random item from an array.
  */
-export function sample<T>(list: T[]): T | undefined {
-  return list.length
+export function sample<T>(list: T[]): Option<T> {
+  return wrap(list.length
     ? list[Math.floor(Math.random() * list.length)]
-    : undefined;
+    : undefined as unknown as any);
 }

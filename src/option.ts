@@ -1,5 +1,3 @@
-import type { Nullish } from "./types";
-
 /**
  * Represents a thing that may or may not have a value.
  *
@@ -44,7 +42,7 @@ export interface Option<T> {
   isNoneOr(fn: (x: T) => boolean): boolean;
 }
 
-class _Option<T> implements Option<T> {
+export class OptionConstructor<T> implements Option<T> {
   constructor(private readonly value: T) { }
 
   unwrap(): T {
@@ -81,7 +79,7 @@ class _Option<T> implements Option<T> {
  * Wraps a value that might be `null` or `undefined` and 
  * turns it into an Option.
  */
-export function wrap<T>(value: Nullish<T>): Option<Nullish<T>> {
-  return new _Option(value);
+export function wrap<T>(value: T): Option<T> {
+  return new OptionConstructor(value);
 }
 
