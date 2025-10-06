@@ -83,3 +83,23 @@ export function wrap<T>(value: T): Option<T> {
   return new OptionConstructor(value);
 }
 
+/**
+ * An `Option` that will always have some value.
+ *
+ * You cannot put null into a Some.
+ *
+ * @throws an error if you try to give `null` or `undefined`.
+ */
+export function Some<T>(value: NonNullable<T>): Option<NonNullable<T>> {
+  if (value === null || value === undefined) {
+    throw new Error('You are trying to put a None in a Some');
+  }
+  return wrap(value)
+}
+
+/**
+ * An `Option` that has `None` value.
+ *
+ * A `None` is `null` or `undefined`.
+ */
+export const None = wrap(null);
