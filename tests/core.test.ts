@@ -8,7 +8,7 @@ import { wrap } from '../src/option.ts';
 describe("isEqual", () => {
   it("returns true for numbers and strings that match after stringify and trim", () => {
     expect(isEqual("1", 1)).toBe(true);
-    expect(isEqual(false, " false ")).toBe(true);
+    expect(isEqual(false, " false ")).toBe(false);
   });
 
   it("returns true for objects with same stringified content", () => {
@@ -35,13 +35,15 @@ describe("isNotEqual", () => {
     expect(isNotEqual("2", 1)).toBe(true);
     expect(isNotEqual({ foo: "bar" }, { foo: "bar" })).toBe(false);
     expect(isNotEqual([], [1])).toBe(true);
+    expect(isNotEqual("false ", "false")).toBe(true);
+    expect(isNotEqual("false", false)).toBe(false);
   });
 });
 
 describe("isEqualIgnoreCase", () => {
   it("returns true for numbers and strings that match after stringify, trim, and lowercase", () => {
     expect(isEqualIgnoreCase("1", 1)).toBe(true);
-    expect(isEqualIgnoreCase(false, " false ")).toBe(true);
+    expect(isEqualIgnoreCase(false, " false ")).toBe(false);
     expect(isEqualIgnoreCase(false, "FALSE")).toBe(true);
   });
 
@@ -58,7 +60,7 @@ describe("isEqualIgnoreCase", () => {
     expect(isEqualIgnoreCase([0], [1])).toBe(false);
   });
 
-  it("returns false for different strings / cases when compared case-insensitive", () => {
+  it("returns false for different stringe / cases when compared case-insensitive", () => {
     expect(isEqualIgnoreCase("hello", "world")).toBe(false);
   });
 });
@@ -75,7 +77,8 @@ describe("isNotEqualIgnoreCase", () => {
   });
 
   it("handles booleans and case-insensitive strings", () => {
-    expect(isNotEqualIgnoreCase(false, " false ")).toBe(false);
+    expect(isNotEqualIgnoreCase(false, " false ")).toBe(true);
+    expect(isNotEqualIgnoreCase(false, "false_not")).toBe(true);
     expect(isNotEqualIgnoreCase(false, "FALSE")).toBe(false);
   });
 });
@@ -90,16 +93,20 @@ describe("stringify", () => {
 });
 
 describe("bool", () => {
-  it("returns false for false, 0, nullish, or whitespace strings", () => {
-    expect(bool("false")).toBe(false);
-    expect(bool("0")).toBe(false);
+  it("should return false for falsy situations", () => {
+    expect(bool(false)).toBe(false);
+    expect(bool(0)).toBe(false);
+    expect(bool("")).toBe(false);
     expect(bool("   ")).toBe(false);
+    expect(bool(wrap(null))).toBe(false);
   });
 
   it("returns true for other truthy values", () => {
     expect(bool({})).toBe(true);
     expect(bool("hello")).toBe(true);
     expect(bool(42)).toBe(true);
+    expect(bool("0")).toBe(true);
+    expect(bool(wrap(''))).toBe(true);
   });
 });
 
@@ -144,10 +151,11 @@ describe("isEmpty", () => {
 
   it("detects non-empty values correctly", () => {
     expect(isEmpty([0])).toBe(false);
-    expect(isEmpty(" ")).toBe(false);
+    expect(isEmpty(" ")).toBe(true);
     expect(isEmpty({ a: 1 })).toBe(false);
     expect(isEmpty(new Set([1]))).toBe(false);
-    expect(isEmpty(wrap(' '))).toBe(false);
+    expect(isEmpty(wrap(''))).toBe(false);
+    expect(isEmpty(wrap(null))).toBe(true);
   });
 });
 
@@ -156,7 +164,9 @@ describe("isNotEmpty", () => {
     expect(isNotEmpty([])).toBe(false);
     expect(isNotEmpty([0])).toBe(true);
     expect(isNotEmpty("")).toBe(false);
-    expect(isNotEmpty(" ")).toBe(true);
+    expect(isNotEmpty(" ")).toBe(false);
+    expect(isNotEmpty(wrap(''))).toBe(true);
+    expect(isNotEmpty(wrap(null))).toBe(false);
   });
 });
 
