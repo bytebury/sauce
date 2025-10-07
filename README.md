@@ -83,3 +83,20 @@ setTimeout(() => { /* omit */}, 1_800_000);  // ⚠️ we'd have to think about 
 // Instead, we offer the `Duration` object:
 setTimeout(() => { /* omit */}, Duration.minutes(30)); // ✅ readable
 ```
+
+Sauce also supplies types that every application can benefit from. You can read
+about all of the types that we [export here](https://sauce.pizzastate.dev/modules/types.html).
+It includes types like: `Autocomplete`, `UnknownRecord`, `UnknownList`, `OneOrMany`, `NonEmptyList` and more.
+
+## Inspiration
+At Bytebury, we use Rust extensively and appreciate how elegantly it handles null values.
+TypeScript has `null` and `undefined`, but all too often we find ourselves writing 
+repetitive null-checks or worse, discovering null-related errors only at runtime. We think that
+TypeScript can benefit from the `Option` pattern that Rust provides. We acknowledge it's not
+fool-proof. However, it's made development enjoyable, explicit, and efficient in TypeScript.
+
+We've also included some functions that we personally use all the time, and therefore, that's
+included in the library. If you want to use Sauce, and we're missing a function that you
+find useful, please feel free to contribute back to the project.
+
+
