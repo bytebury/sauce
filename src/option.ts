@@ -103,7 +103,7 @@ export class OptionConstructor<T> implements Option<T> {
  * Wraps a value that might be `null` or `undefined` and 
  * turns it into an Option.
  */
-function wrap<T>(value: T): Option<T> {
+export function wrap<T>(value: T): Option<T> {
   return new OptionConstructor(value);
 }
 
