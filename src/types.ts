@@ -93,3 +93,5 @@ export type OneOrMany<T> = T | T[];
  * Represents a non-empty list.
  */
 export type NonEmptyList<T> = [T, ...T[]];
+
+export type Nullish<T> = T | undefined | null;

@@ -11,7 +11,7 @@ npm i --save @bytebury/sauce
 ## Usage
 ```ts
 import { title, sample, wrap, isWhitespace } from "@bytebury/sauce";
-import type { Option } from "@bytebury/sauce";
+import { type Option } from "@bytebury/sauce";
 
 function sayHelloTo(name: Option<string>): void {
   if (name.isNoneOr(isWhitespace)) {

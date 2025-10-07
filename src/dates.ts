@@ -43,7 +43,14 @@ export function subtractDays(date: Date, days: number): Date {
  */
 export function addMonths(date: Date, months: number): Date {
   const result = new Date(date);
-  result.setMonth(result.getMonth() + months);
+  const targetMonth = result.getMonth() + months;
+  result.setMonth(targetMonth);
+
+  // Fix for month overflow (e.g., Jan 31 → Feb)
+  while (result.getMonth() !== ((targetMonth % 12 + 12) % 12)) {
+    result.setDate(result.getDate() - 1);
+  }
+
   return result;
 }
 /**

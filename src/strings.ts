@@ -1,13 +1,21 @@
 /**
  * Determines if the given text is only comprised of whitespace.
+ *
+ * @example
+ * isWhitespace("   "); // true
+ * isWhitespace("\n\t"); // true
+ * isWhitespace("Hello"); // false
  */
 export function isWhitespace(text: string): boolean {
   return trim(text).length === 0;
 }
 
 /**
- * Determines if the given text is not only comprised
- * of whitespace.
+ * Determines if the given text contains any non-whitespace characters.
+ *
+ * @example
+ * isNotWhitespace("   "); // false
+ * isNotWhitespace("Hello"); // true
  */
 export function isNotWhitespace(text: string): boolean {
   return !isWhitespace(text);
@@ -44,36 +52,58 @@ export function title(text: string): string {
 }
 
 /**
- * Convert the string to lowercase. An alias for `toLowerCase()`.
+ * Converts the string to lowercase.
+ * An alias for `toLowerCase()`.
+ *
+ * @example
+ * lower("Hello WORLD"); // "hello world"
  */
 export function lower(text: string): string {
   return text.toLowerCase();
 }
 
 /**
- * Convert the string to uppercase. An alias for `toUpperCase()`.
+ * Converts the string to uppercase.
+ * An alias for `toUpperCase()`.
+ *
+ * @example
+ * upper("Hello world"); // "HELLO WORLD"
  */
 export function upper(text: string): string {
   return text.toUpperCase();
 }
 
 /**
- * Convert the string to kebab-case.
+ * Converts the string to `kebab-case` by removing punctuation,
+ * trimming extra spaces, converting to lowercase, and joining words with hyphens.
+ *
+ * @example
+ * kebab("Hello World!"); // "hello-world"
+ * kebab("  Clean THIS_up!! "); // "clean-this-up"
  */
 export function kebab(text: string): string {
   return trim(removePunctuation(lower(text))).replace(/\s+/g, "-");
 }
 
 /**
- * Convert the string to snake_case.
+ * Converts a string to `snake_case` by replacing spaces and punctuation with underscores.
+ * Uses `kebab()` internally, replacing hyphens with underscores.
+ *
+ * @example
+ * snake("Hello World"); // "hello_world"
+ * snake("User-Profile Page"); // "user_profile_page"
  */
 export function snake(text: string): string {
   return kebab(text).replace(/-/g, "_");
 }
 
 /**
- * Removes all non-alphanumeric characters except spaces and returns
- * the new string.
+ * Returns a copy of the given string with all non-alphanumeric characters removed,
+ * except for spaces. Letters and digits are preserved regardless of case.
+ *
+ * @example
+ * alphanumeric("Hello, World!"); // "Hello World"
+ * alphanumeric("123@#Test"); // "123Test"
  */
 export function alphanumeric(text: string): string {
   return text.replace(/[^a-z0-9 ]/gi, "");
@@ -81,6 +111,9 @@ export function alphanumeric(text: string): string {
 
 /**
  * Removes any non-numeric characters. This includes spaces.
+ *
+ * @example
+ * numeric('(555) 555-5555'); // 5555555555
  */
 export function numeric(text: string): string {
   return text.replace(/[^\d]/g, "");

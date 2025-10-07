@@ -5,7 +5,11 @@
  * or undefined.
  *
  * @example
- * const value = wrap(mightBeNull).unwrapOr(100);
+ * const option = wrap(mightBeNull);
+ *
+ * const value1 = option.unwrapOr(100);
+ * const value2 = option.isNoneOr(isWhitespace);
+ * const value3 = option.isSomeAnd(isEven);
  */
 export interface Option<T> {
   /**
@@ -15,7 +19,7 @@ export interface Option<T> {
    *
    * @throws an error when underlying value is `None`.
    */
-  unwrap(): T;
+  unwrap(): NonNullable<T>;
   /**
    * Unwraps the underlying value, or returns the given
    * value if the underlying value is `None`.
@@ -40,16 +44,28 @@ export interface Option<T> {
    * or the predicate using the `Some` value is true.
    */
   isNoneOr(fn: (x: T) => boolean): boolean;
+  /**
+   * Forces an unwrap of a null. This will always return
+   * `null`, even if there is a value. This is only useful
+   * if you want to always return `null` from this option.
+   */
+  null(): null;
+  /**
+   * Forces an unwrap of undefined. This will always return
+   * `undefined`, even if there is a value. This is only useful
+   * if you want to always return `undefined` from this option.
+   */
+  undefined(): undefined;
 }
 
 export class OptionConstructor<T> implements Option<T> {
   constructor(private readonly value: T) { }
 
-  unwrap(): T {
+  unwrap(): NonNullable<T> {
     if (this.isNone()) {
       throw new Error("Trying to unwrap a value that is null or undefined.");
     }
-    return this.value;
+    return this.value as NonNullable<T>;
   }
 
   unwrapOr(value: unknown): unknown {
@@ -73,13 +89,21 @@ export class OptionConstructor<T> implements Option<T> {
   isNoneOr(fn: (x: T) => boolean): boolean {
     return this.isNone() || fn(this.value);
   }
+
+  null(): null {
+    return null;
+  }
+
+  undefined(): undefined {
+    return undefined;
+  }
 }
 
 /**
  * Wraps a value that might be `null` or `undefined` and 
  * turns it into an Option.
  */
-export function wrap<T>(value: T): Option<T> {
+function wrap<T>(value: T): Option<T> {
   return new OptionConstructor(value);
 }
 
@@ -100,6 +124,6 @@ export function Some<T>(value: NonNullable<T>): Option<NonNullable<T>> {
 /**
  * An `Option` that has `None` value.
  *
- * A `None` is `null` or `undefined`.
+ * @remarks A `None` is `null` or `undefined`.
  */
-export const None = wrap(null);
+export const None: Option<never> = wrap(null as never);

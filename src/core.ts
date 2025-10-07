@@ -1,6 +1,6 @@
 import { isWhitespace, lower } from "./strings";
 import type { OneOrMany, UnknownList } from "./types";
-import { OptionConstructor, wrap, type Option } from './option';
+import { None, OptionConstructor, Some, type Option } from './option';
 
 /**
  * Compares two things by turning them into strings,
@@ -98,10 +98,9 @@ export function stringify<T>(thing: T): string {
 /**
  * Converts the given parameter to a boolean.
  *
- * This is the same as doing `Boolean(value)` however,
- * if the `value` is a string containing only whitespace,
- * this function will consider that an empty string,
- * and therefore return `false`.
+ * This is the same as doing `Boolean(value)` however, if the `value` is
+ * a string containing only whitespace, this function will consider that
+ * an empty string, and therefore return `false`.
  *
  * @example
  * bool("false"); // true
@@ -256,11 +255,26 @@ export function distinct<T>(list: T[]): T[] {
 
 /**
  * Pick a random item from an array.
+ *
+ * @remarks
+ * This will always return `None` if the list is empty.
+ *
+ * @example
+ * const myList = [1, 2, 3, 4];
+ * const randomItem = sample(myList);
+ *
+ * if (randomItem.isSome()) {
+ *   console.log(randomItem.unwrap()); // could be 1, 2, 3, or 4
+ * } else {
+ *   console.log('No item found');
+ * }
  */
 export function sample<T>(list: T[]): Option<T> {
-  return wrap(list.length
-    ? list[Math.floor(Math.random() * list.length)]
-    : undefined as unknown as any);
+  if (list.length) {
+    let value = list[Math.floor(Math.random() * list.length)];
+    if (value) return Some(value);
+  }
+  return None;
 }
 
 /**

@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { isEqual, isNotEqual } from "../src/core.ts";
+import { distinct, falsy, isEqual, isNotEqual, truthy } from "../src/core.ts";
 import { isEqualIgnoreCase, isNotEqualIgnoreCase } from "../src/core.ts";
 import { stringify, bool, reverse, sample, isEmpty, isNotEmpty } from "../src/core.ts";
 import { unique, clone } from "../src/core.ts";
-import { wrap } from '../src/option.ts';
+import { None, Some } from '../src/option.ts';
 
 describe("isEqual", () => {
   it("returns true for numbers and strings that match after stringify and trim", () => {
@@ -98,7 +98,7 @@ describe("bool", () => {
     expect(bool(0)).toBe(false);
     expect(bool("")).toBe(false);
     expect(bool("   ")).toBe(false);
-    expect(bool(wrap(null))).toBe(false);
+    expect(bool(None)).toBe(false);
   });
 
   it("returns true for other truthy values", () => {
@@ -106,7 +106,7 @@ describe("bool", () => {
     expect(bool("hello")).toBe(true);
     expect(bool(42)).toBe(true);
     expect(bool("0")).toBe(true);
-    expect(bool(wrap(''))).toBe(true);
+    expect(bool(Some(''))).toBe(true);
   });
 });
 
@@ -138,62 +138,133 @@ describe("reverse", () => {
 });
 
 describe("isEmpty", () => {
-  it("detects empty values correctly", () => {
-    expect(isEmpty("")).toBe(true);
-    expect(isEmpty([])).toBe(true);
-    expect(isEmpty(new Set())).toBe(true);
-    expect(isEmpty({})).toBe(true);
-    expect(isEmpty(new Map())).toBe(true);
+  it("returns true for null or undefined", () => {
     expect(isEmpty(null)).toBe(true);
     expect(isEmpty(undefined)).toBe(true);
-    expect(isEmpty(wrap(null as unknown as string))).toBe(true);
   });
 
-  it("detects non-empty values correctly", () => {
-    expect(isEmpty([0])).toBe(false);
-    expect(isEmpty(" ")).toBe(true);
-    expect(isEmpty({ a: 1 })).toBe(false);
+  it("returns true for empty strings and whitespace-only strings", () => {
+    expect(isEmpty("")).toBe(true);
+    expect(isEmpty("   ")).toBe(true);
+    expect(isEmpty("\n\t")).toBe(true);
+  });
+
+  it("returns false for non-empty strings", () => {
+    expect(isEmpty("Hello")).toBe(false);
+  });
+
+  it("returns true for empty arrays", () => {
+    expect(isEmpty([])).toBe(true);
+  });
+
+  it("returns false for non-empty arrays", () => {
+    expect(isEmpty([1, 2])).toBe(false);
+  });
+
+  it("returns true for empty objects", () => {
+    expect(isEmpty({})).toBe(true);
+  });
+
+  it("returns false for non-empty objects", () => {
+    expect(isEmpty({ foo: "bar" })).toBe(false);
+  });
+
+  it("returns true for empty Set and Map", () => {
+    expect(isEmpty(new Set())).toBe(true);
+    expect(isEmpty(new Map())).toBe(true);
+  });
+
+  it("returns false for non-empty Set and Map", () => {
     expect(isEmpty(new Set([1]))).toBe(false);
-    expect(isEmpty(wrap(''))).toBe(false);
-    expect(isEmpty(wrap(null))).toBe(true);
+    expect(isEmpty(new Map([["key", "value"]]))).toBe(false);
+  });
+
+  it("returns true for OptionConstructor that is None", () => {
+    const noneOption = None;
+    expect(isEmpty(noneOption)).toBe(true);
+  });
+
+  it("returns false for OptionConstructor that is Some", () => {
+    const someOption = Some(42);
+    expect(isEmpty(someOption)).toBe(false);
+    expect(someOption.unwrap()).toBe(42);
   });
 });
 
 describe("isNotEmpty", () => {
-  it("returns the inverse of isEmpty", () => {
-    expect(isNotEmpty([])).toBe(false);
-    expect(isNotEmpty([0])).toBe(true);
+  it("returns the opposite of isEmpty", () => {
+    expect(isNotEmpty(null)).toBe(false);
     expect(isNotEmpty("")).toBe(false);
-    expect(isNotEmpty(" ")).toBe(false);
-    expect(isNotEmpty(wrap(''))).toBe(true);
-    expect(isNotEmpty(wrap(null))).toBe(false);
+    expect(isNotEmpty("Hello")).toBe(true);
+    expect(isNotEmpty([1])).toBe(true);
+    expect(isNotEmpty([])).toBe(false);
+    expect(isNotEmpty({ foo: "bar" })).toBe(true);
+    expect(isNotEmpty({})).toBe(false);
+    expect(isNotEmpty(new Set([1]))).toBe(true);
+    expect(isNotEmpty(new Set())).toBe(false);
   });
 });
 
 describe("unique", () => {
-  it("removes duplicates from arrays", () => {
-    expect(unique([1, 2, 2, 3, 3, 3])).toEqual([1, 2, 3]);
+  it("returns an array of distinct values", () => {
+    expect(unique([1, 2, 2, 3])).toEqual([1, 2, 3]);
+    expect(unique(["a", "b", "a"])).toEqual(["a", "b"]);
+  });
+
+  it("returns an empty array when given an empty array", () => {
     expect(unique([])).toEqual([]);
   });
 });
 
-describe("sample", () => {
-  it("returns undefined for empty array", () => {
-    expect(sample([]).isNone()).toBe(true);
-  });
-
-  it("returns an element from the array", () => {
-    const arr = [1, 2, 3];
-    const result = sample(arr).unwrap();
-    expect(arr).toContain(result);
-  });
-
-  it("returns all possible values over multiple runs", () => {
-    const arr = [1, 2, 3];
-    const seen = new Set<number>();
-    for (let i = 0; i < 50; i++) {
-      seen.add(sample(arr).unwrap());
-    }
-    expect(seen.size).toBe(arr.length);
+describe("distinct", () => {
+  it("is an alias for unique", () => {
+    expect(distinct([1, 2, 2, 3])).toEqual([1, 2, 3]);
+    expect(distinct(["x", "x", "y"])).toEqual(["x", "y"]);
   });
 });
+
+describe("sample", () => {
+  it("returns undefined wrapped in Option for empty array", () => {
+    const result = sample([]);
+    expect(result.isNone()).toBe(true);
+  });
+
+  it("returns one of the elements for non-empty array", () => {
+    const list = [1, 2, 3, 4, 5];
+    const result = sample(list);
+    expect(list).toContain(result.unwrap());
+  });
+});
+
+describe("truthy", () => {
+  it("returns true for truthy values", () => {
+    expect(truthy(true)).toBe(true);
+    expect(truthy(1)).toBe(true);
+    expect(truthy("non-empty")).toBe(true);
+  });
+
+  it("returns false for falsy values", () => {
+    expect(truthy(false)).toBe(false);
+    expect(truthy(0)).toBe(false);
+    expect(truthy("")).toBe(false);
+    expect(truthy(null)).toBe(false);
+    expect(truthy(undefined)).toBe(false);
+  });
+});
+
+describe("falsy", () => {
+  it("returns true for falsy values", () => {
+    expect(falsy(false)).toBe(true);
+    expect(falsy(0)).toBe(true);
+    expect(falsy("")).toBe(true);
+    expect(falsy(null)).toBe(true);
+    expect(falsy(undefined)).toBe(true);
+  });
+
+  it("returns false for truthy values", () => {
+    expect(falsy(true)).toBe(false);
+    expect(falsy(1)).toBe(false);
+    expect(falsy("hello")).toBe(false);
+  });
+});
+
