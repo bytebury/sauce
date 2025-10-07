@@ -6,7 +6,7 @@
  * isEven(5); // false
  */
 export function isEven(num: number): boolean {
-  return num % 2 === 0;
+  return (num || 0) % 2 === 0;
 }
 
 /**
@@ -33,6 +33,8 @@ export function isOdd(num: number): boolean {
  * ordinalize(112); // "112th"
  */
 export function ordinalize(num: number): string {
+  num ||= 0;
+
   const v = num % 100;
 
   if (v >= 11 && v <= 13) return num + "th";

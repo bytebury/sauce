@@ -13,47 +13,166 @@
  */
 export interface Option<T> {
   /**
-   * Unwrap the underlying value and returns it.
+   * Unwraps the underlying value and returns it.
    * If the value is `None` then this function
    * will throw an error.
    *
-   * @throws an error when underlying value is `None`.
+   * @throws
+   * An error when the underlying value is `None`.
+   *
+   * @example
+   * ```ts
+   * Some(42).unwrap(); // 42
+   * None.unwrap(); // throws Error
+   * ```
    */
   unwrap(): NonNullable<T>;
   /**
+   * Unwraps the underlying value and returns it.
+   * If the value is `None` then this function
+   * will throw an error with the given message.
+   *
+   * @remarks
+   * Usually preferred over `unwrap`.
+   *
+   * @throws
+   * An error when the underlying value is `None`.
+   * This error will contain the provided message.
+   *
+   * @example
+   * ```ts
+   * Some("hi").expect("should never fail"); // "hi"
+   * None.expect("missing value"); // throws Error("missing value")
+   * ```
+   */
+  expect(message: string): NonNullable<T>;
+  /**
    * Unwraps the underlying value, or returns the given
    * value if the underlying value is `None`.
+   *
+   * @example
+   * ```ts
+   * Some(10).unwrapOr(0); // 10
+   * None.unwrapOr(0); // 0
+   * ```
    */
   unwrapOr(value: unknown): unknown;
   /**
    * Determines if the underlying value is something.
+   *
+   * @example
+   * ```ts
+   * Some(5).isSome(); // true
+   * None.isSome(); // false
+   * ```
    */
   isSome(): boolean;
   /**
    * Determines if the underlying value is something,
    * and the predicate using that same value is also
    * true.
+   *
+   * @example
+   * ```ts
+   * Some(4).isSomeAnd(isEven); // true
+   * Some(3).isSomeAnd(isEven); // false
+   * None.isSomeAnd(() => true); // false
+   * ```
    */
   isSomeAnd(fn: (x: T) => boolean): boolean;
   /**
    * Determines if the underlying value is `None`.
+   *
+   * @example
+   * ```ts
+   * None.isNone(); // true
+   * Some("hi").isNone(); // false
+   * ```
    */
   isNone(): boolean;
   /**
    * Determines if the underlying value is `None`,
-   * or the predicate using the `Some` value is true.
+   * or if the predicate using that same value returns `true`.
+   * 
+   * @example
+   * ```ts
+   * None.isNoneOr(() => false); // true
+   * Some(5).isNoneOr(isOdd); // true
+   * Some(2).isNoneOr(isOdd); // false
+   * ```
    */
   isNoneOr(fn: (x: T) => boolean): boolean;
+  /**
+   * Returns `None` if the `Option` is `None`. Otherwise,
+   * this will call the predicate. If the predicate returns
+   * `true` then this will return `Some(T)`. If the predicate
+   * returns `false`, then this will return `None`.
+   *
+   * @example
+   * ```ts
+   * Some(10).filter(isEven); // Some(10)
+   * Some(3).filter(isEven); // None
+   * None.filter(isEven); // None
+   * ```
+   */
+  filter(fn: (x: T) => boolean): Option<T>;
+  /**
+   * Reads the current value wrapped in this Option and
+   * performs a side-effect. Useful for logging situations.
+   *
+   * @example
+   * ```ts
+   * Some("hello").inspect(console.log); // logs "hello", returns Some("hello")
+   * None.inspect(console.log); // does nothing, returns None
+   * ```
+   */
+  inspect(fn: (x: T) => void): Option<T>;
+  /**
+   * Maps an `Option` to `Option` by applying the function when
+   * the contained value is `Some`. If it is `None`, then it will
+   * return `None`.
+   *
+   * @example
+   * ```ts
+   * Some(2).map(x => x * 3); // Some(6)
+   * None.map(x => x * 3); // None
+   * ```
+   */
+  map(fn: (x: T) => unknown): Option<unknown>;
+  /**
+   * Maps an `Option` to a value by applying the function when
+   * the contained value is `Some`. If it is `None`, then it will
+   * return the `defaultVal` given.
+   *
+   * @example
+   * ```ts
+   * Some(4).mapOr(0, x => x * 2); // 8
+   * None.mapOr(0, x => x * 2); // 0
+   * ```
+   */
+  mapOr(defaultVal: unknown, fn: (x: T) => unknown): unknown;
   /**
    * Forces an unwrap of a null. This will always return
    * `null`, even if there is a value. This is only useful
    * if you want to always return `null` from this option.
+   *
+   * @example
+   * ```ts
+   * Some(42).null(); // null
+   * None.null(); // null
+   * ```
    */
   null(): null;
   /**
    * Forces an unwrap of undefined. This will always return
    * `undefined`, even if there is a value. This is only useful
    * if you want to always return `undefined` from this option.
+   *
+   * @example
+   * ```ts
+   * Some(42).undefined(); // undefined
+   * None.undefined(); // undefined
+   * ```
    */
   undefined(): undefined;
 }
@@ -64,6 +183,13 @@ export class OptionConstructor<T> implements Option<T> {
   unwrap(): NonNullable<T> {
     if (this.isNone()) {
       throw new Error("Trying to unwrap a value that is null or undefined.");
+    }
+    return this.value as NonNullable<T>;
+  }
+
+  expect(message: string): NonNullable<T> {
+    if (this.isNone()) {
+      throw new Error(message);
     }
     return this.value as NonNullable<T>;
   }
@@ -88,6 +214,28 @@ export class OptionConstructor<T> implements Option<T> {
 
   isNoneOr(fn: (x: T) => boolean): boolean {
     return this.isNone() || fn(this.value);
+  }
+
+  filter(fn: (x: T) => boolean): Option<T> {
+    if (this.isNone()) return None;
+    const val = fn(this.value);
+    if (val) return Some(this.value as NonNullable<T>);
+    return None;
+  }
+
+  inspect(fn: (x: T) => void): Option<T> {
+    fn(this.value);
+    return this;
+  }
+
+  map(fn: (x: T) => unknown): Option<unknown> {
+    if (this.isNone()) return None;
+    return wrap(fn(this.value));
+  }
+
+  mapOr(defaultVal: unknown, fn: (x: T) => unknown): unknown {
+    if (this.isNone()) return defaultVal;
+    return wrap(fn(this.value)).unwrapOr(defaultVal);
   }
 
   null(): null {

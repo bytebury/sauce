@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { None, Some } from "../src/option";
 import { isEven } from '../src/numbers';
 
@@ -89,4 +89,68 @@ describe("OptionConstructor / wrap / Some / None", () => {
       expect(None.undefined()).toBe(undefined);
     });
   });
+
+  describe("expect", () => {
+    it("returns the inner value when Some()", () => {
+      expect(Some(42).expect("should not throw")).toBe(42);
+      expect(Some("hi").expect("should not throw")).toBe("hi");
+    });
+
+    it("throws an error with the provided message when None", () => {
+      expect(() => None.expect("missing value")).toThrow("missing value");
+      expect(() => None.expect("nope")).toThrow("nope");
+    });
+  });
+
+  describe("filter", () => {
+    it("returns None() when Option is None", () => {
+      expect(None.filter(() => true)).toEqual(None);
+      expect(None.filter(() => false)).toEqual(None);
+    });
+
+    it("returns Some() when predicate returns true", () => {
+      expect(Some(42).filter(x => x > 0)).toEqual(Some(42));
+    });
+
+    it("returns None when predicate returns false", () => {
+      expect(Some(42).filter(x => x < 0)).toEqual(None);
+    });
+  });
+
+  describe("inspect", () => {
+    it("calls the callback when Some()", () => {
+      const fn = vi.fn();
+      const opt = Some(99).inspect(fn);
+      expect(fn).toHaveBeenCalledWith(99);
+      expect(opt).toEqual(Some(99));
+    });
+
+    it("does not call the callback when None", () => {
+      const fn = vi.fn();
+      const opt = None.inspect(fn);
+      expect(fn).toHaveBeenCalledWith(null);
+      expect(opt).toEqual(None);
+    });
+  });
+  describe("map", () => {
+    it("returns None when Option is None", () => {
+      expect(None.map(x => x)).toEqual(None);
+    });
+
+    it("applies the function when Some()", () => {
+      expect(Some(2).map(x => x * 2)).toEqual(Some(4));
+      expect(Some("hi").map(s => s.toUpperCase())).toEqual(Some("HI"));
+    });
+  });
+
+  describe("mapOr", () => {
+    it("returns the mapped value when Some()", () => {
+      expect(Some(3).mapOr(0, x => x * 3)).toBe(9);
+    });
+
+    it("returns the default when None", () => {
+      expect(None.mapOr(10, x => x)).toBe(10);
+    });
+  });
+
 });

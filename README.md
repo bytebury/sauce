@@ -28,6 +28,10 @@ It has zero dependencies and a small footprint. We also offer `Option` which is
 inspired by **[Rust](https://rust-lang.org)**. It helps avoid Null-pointer Exceptions,
 and TypeScript does its best to not allow you to hurt yourself at compile time.
 
+When you call any _string or number function_ in Sauce, you will never experience
+a NullException. We will always default a value if null or undefined is given
+_or_ if we cannot return a default value, we will return an `Option<T>`.
+
 In Sauce, we have `Some` and `None` which are exported by Sauce. As the name implies,
 `Some` represents a thing that has a value. `None` represents a thing without a value.
 In our case, `None === (null || undefined)`. Therefore, you can create an option three ways:

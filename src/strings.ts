@@ -29,7 +29,7 @@ export function isNotWhitespace(text: string): boolean {
  * [' hello ', ' world '].map(trim); // ['hello', 'world'];
  */
 export function trim(text: string): string {
-  return text.trim();
+  return (text || "").trim();
 }
 
 /**
@@ -59,7 +59,7 @@ export function title(text: string): string {
  * lower("Hello WORLD"); // "hello world"
  */
 export function lower(text: string): string {
-  return text.toLowerCase();
+  return (text || "").toLowerCase();
 }
 
 /**
@@ -70,7 +70,7 @@ export function lower(text: string): string {
  * upper("Hello world"); // "HELLO WORLD"
  */
 export function upper(text: string): string {
-  return text.toUpperCase();
+  return (text || "").toUpperCase();
 }
 
 /**
@@ -106,7 +106,7 @@ export function snake(text: string): string {
  * alphanumeric("123@#Test"); // "123Test"
  */
 export function alphanumeric(text: string): string {
-  return text.replace(/[^a-z0-9 ]/gi, "");
+  return (text || "").replace(/[^a-z0-9 ]/gi, "");
 }
 
 /**
@@ -116,7 +116,7 @@ export function alphanumeric(text: string): string {
  * numeric('(555) 555-5555'); // 5555555555
  */
 export function numeric(text: string): string {
-  return text.replace(/[^\d]/g, "");
+  return (text || "").replace(/[^\d]/g, "");
 }
 
 function removePunctuation(text: string): string {

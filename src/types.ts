@@ -94,4 +94,7 @@ export type OneOrMany<T> = T | T[];
  */
 export type NonEmptyList<T> = [T, ...T[]];
 
+/**
+ * Represents a thing that might be `None` (null or undefined).
+ */
 export type Nullish<T> = T | undefined | null;

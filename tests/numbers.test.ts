@@ -6,6 +6,8 @@ describe("isEven", () => {
     expect(isEven(0)).toBe(true);
     expect(isEven(2)).toBe(true);
     expect(isEven(-4)).toBe(true);
+    expect(isEven(null as any)).toBe(true);
+    expect(isEven(undefined as any)).toBe(true);
   });
 
   it("returns false for odd numbers", () => {
@@ -26,6 +28,8 @@ describe("isOdd", () => {
     expect(isOdd(0)).toBe(false);
     expect(isOdd(2)).toBe(false);
     expect(isOdd(-4)).toBe(false);
+    expect(isOdd(null as any)).toBe(false);
+    expect(isOdd(undefined as any)).toBe(false);
   });
 });
 
@@ -54,6 +58,11 @@ describe("ordinalize", () => {
     expect(ordinalize(22)).toBe("22nd");
     expect(ordinalize(23)).toBe("23rd");
     expect(ordinalize(112)).toBe("112th");
+  });
+
+  it('should treat null and undefined as 0', () => {
+    expect(ordinalize(undefined as any)).toBe("0th");
+    expect(ordinalize(null as any)).toBe("0th");
   });
 });
 
