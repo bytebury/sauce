@@ -90,6 +90,23 @@ function sayHello(name: Option<string>): void {
 }
 ```
 
+Here's some more example of `Option` at work for reference (but refer to our documentation
+for more information). These examples demonstrate that you can interact with an `Option<T>`
+before you decide to work with them. This is super useful especially when doing
+mapping excersizes.
+
+```ts
+const someNumber = Some(4); // Some(4)
+const evenNumber = someNumber.filter(isEven); // Some(4)
+const oddNumber = someNumber.filter(isEven); // None
+const mulByTwo = someNumber.map(x => x * 2); // Some(8)
+const mulByFour = None.map(x => x * 2); // None
+const mulByTwoOr = someNumber.mapOr(0, x => x * 2); // 8
+const mulByFourOr = None.mapOr(0, x => x * 4); // 0
+
+someNumber.inspect(x => console.log(`The number is: ${x}`); // Some(4)
+```
+
 We also introduce types to be more explicit in our intentions, these are minor
 tweaks to our code, but they really help the future developers.
 
