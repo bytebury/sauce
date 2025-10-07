@@ -28,6 +28,19 @@ It has zero dependencies and a small footprint. We also offer `Option` which is
 inspired by **[Rust](https://rust-lang.org)**. It helps avoid Null-pointer Exceptions,
 and TypeScript does its best to not allow you to hurt yourself at compile time.
 
+In Sauce, we have `Some` and `None` which are exported by Sauce. As the name implies,
+`Some` represents a thing that has a value. `None` represents a thing without a value.
+In our case, `None === (null || undefined)`. Therefore, you can create an option three ways:
+
+```ts
+// via `Some` - creates an `Option` with the value given wrapped.
+const option1 = Some("123");
+// via `None` - creates an `Option` with no value (`None`).
+const option2 = None;
+// via `wrap()` - converts any value to an `Option`.
+const option3 = wrap(couldBeAnything);
+```
+
 Take for example this code:
 
 ```ts
