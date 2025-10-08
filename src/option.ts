@@ -56,7 +56,7 @@ export interface Option<T> {
    * None.unwrapOr(0); // 0
    * ```
    */
-  unwrapOr(value: unknown): unknown;
+  unwrapOr(value: T): T;
   /**
    * Determines if the underlying value is something.
    *
@@ -138,7 +138,7 @@ export interface Option<T> {
    * None.map(x => x * 3); // None
    * ```
    */
-  map(fn: (x: T) => unknown): Option<unknown>;
+  map(fn: (x: T) => T): Option<T>;
   /**
    * Maps an `Option` to a value by applying the function when
    * the contained value is `Some`. If it is `None`, then it will
@@ -150,7 +150,7 @@ export interface Option<T> {
    * None.mapOr(0, x => x * 2); // 0
    * ```
    */
-  mapOr(defaultVal: unknown, fn: (x: T) => unknown): unknown;
+  mapOr(defaultVal: T, fn: (x: T) => T): T;
   /**
    * Forces an unwrap of a null. This will always return
    * `null`, even if there is a value. This is only useful
@@ -194,7 +194,7 @@ export class OptionConstructor<T> implements Option<T> {
     return this.value as NonNullable<T>;
   }
 
-  unwrapOr(value: unknown): unknown {
+  unwrapOr(value: T): T {
     if (this.isNone()) return value;
     return this.value;
   }
@@ -228,12 +228,12 @@ export class OptionConstructor<T> implements Option<T> {
     return this;
   }
 
-  map(fn: (x: T) => unknown): Option<unknown> {
+  map(fn: (x: T) => T): Option<T> {
     if (this.isNone()) return None;
     return wrap(fn(this.value));
   }
 
-  mapOr(defaultVal: unknown, fn: (x: T) => unknown): unknown {
+  mapOr(defaultVal: T, fn: (x: T) => T): T {
     if (this.isNone()) return defaultVal;
     return wrap(fn(this.value)).unwrapOr(defaultVal);
   }
