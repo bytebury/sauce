@@ -10,7 +10,7 @@
  *  // omitted
  * }
  */
-export type AutoComplete<T extends string> = T | (string & {});
+export type AutoComplete<T extends string> = T | (string & UnknownRecord);
 
 /**
  * This is a utility type that allows you to get the keys from an object or list.

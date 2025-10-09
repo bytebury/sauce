@@ -1,6 +1,6 @@
-import { isWhitespace, lower } from "./strings";
-import type { OneOrMany, UnknownList } from "./types";
-import { None, OptionConstructor, Some, type Option } from './option';
+import { isWhitespace, lower } from "./strings.ts";
+import type { OneOrMany, UnknownList } from "./types.ts";
+import { None, type Option, OptionConstructor, Some } from "./option.ts";
 
 /**
  * Compares two things by turning them into strings,
@@ -115,7 +115,7 @@ export function stringify<T>(thing: T): string {
  * bool(wrap('')); // true
  */
 export function bool<T>(thing: OneOrMany<T>): boolean {
-  if (typeof thing === 'string') return isNotEmpty(thing);
+  if (typeof thing === "string") return isNotEmpty(thing);
   if (thing instanceof OptionConstructor) return thing.isSome();
   return Boolean(thing);
 }
@@ -182,7 +182,10 @@ export function isEmpty(thing: Option<unknown>): boolean;
 export function isEmpty(thing: UnknownList): boolean;
 export function isEmpty(thing: unknown): boolean;
 export function isEmpty(thing: string | UnknownList | unknown): boolean {
-  if (thing instanceof OptionConstructor && thing.isNone()) return true;
+  if (
+    thing instanceof OptionConstructor &&
+    (thing as OptionConstructor<unknown>).isNone()
+  ) return true;
   if (thing === null || thing === undefined) return true;
 
   if (typeof thing === "string") {
@@ -271,7 +274,7 @@ export function distinct<T>(list: T[]): T[] {
  */
 export function sample<T>(list: T[]): Option<T> {
   if (list.length) {
-    let value = list[Math.floor(Math.random() * list.length)];
+    const value = list[Math.floor(Math.random() * list.length)];
     if (value) return Some(value);
   }
   return None;
@@ -279,7 +282,7 @@ export function sample<T>(list: T[]): Option<T> {
 
 /**
  * Determines if the given value is truthy.
- * 
+ *
  * @example
  * truthy(true); // true
  * truthy(false); // false

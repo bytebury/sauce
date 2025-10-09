@@ -1,4 +1,4 @@
-import { Duration } from "./duration";
+import { Duration } from "./duration.ts";
 
 /**
  * Right now. This is an alias for `new Date()`.
@@ -75,7 +75,11 @@ export function subtractYears(date: Date, years: number): Date {
  * Calculates the days between two dates.
  */
 export function daysBetween(start: Date, end: Date): number {
-  return Math.abs(Math.floor((new Date(end).getTime() - new Date(start).getTime()) / Duration.days(1)));
+  return Math.abs(
+    Math.floor(
+      (new Date(end).getTime() - new Date(start).getTime()) / Duration.days(1),
+    ),
+  );
 }
 /**
  * Calculates the months between two dates.
@@ -99,8 +103,9 @@ export function yearsBetween(start: Date, end: Date): number {
   const startDate = new Date(start);
   const endDate = new Date(end);
   const years = endDate.getFullYear() - startDate.getFullYear();
-  if (years === 0)
+  if (years === 0) {
     return 0;
+  }
   // Check if the end date is before the start date
   const hasDayPassed = endDate.getMonth() > startDate.getMonth() ||
     (endDate.getMonth() === startDate.getMonth() &&

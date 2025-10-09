@@ -126,4 +126,3 @@ function removePunctuation(text: string): string {
     .replace(/\s+/g, " ")
     .replace(/[^a-zA-Z0-9\s]/g, "");
 }
-
