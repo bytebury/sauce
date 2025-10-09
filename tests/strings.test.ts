@@ -1,16 +1,16 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-  trim,
-  title,
-  lower,
-  upper,
-  kebab,
-  snake,
   alphanumeric,
-  numeric,
-  isWhitespace,
   isNotWhitespace,
-} from "../src/strings";
+  isWhitespace,
+  kebab,
+  lower,
+  numeric,
+  snake,
+  title,
+  trim,
+  upper,
+} from "../src/strings.ts";
 
 describe("trim", () => {
   it("trims leading and trailing whitespace", () => {
@@ -21,21 +21,21 @@ describe("trim", () => {
   });
 });
 
-describe('isWhitespace', () => {
-  it('should return true when the text is only comprised of whitespace', () => {
-    expect(isWhitespace('  ')).toBe(true);
-    expect(isWhitespace('\n')).toBe(true);
-    expect(isWhitespace('')).toBe(true);
+describe("isWhitespace", () => {
+  it("should return true when the text is only comprised of whitespace", () => {
+    expect(isWhitespace("  ")).toBe(true);
+    expect(isWhitespace("\n")).toBe(true);
+    expect(isWhitespace("")).toBe(true);
     expect(isWhitespace(null as any)).toBe(true);
     expect(isWhitespace(undefined as any)).toBe(true);
   });
 });
 
-describe('notWhitespace', () => {
-  it('should return true when the text is only comprised of whitespace', () => {
-    expect(isNotWhitespace(' %')).toBe(true);
-    expect(isNotWhitespace(' t ')).toBe(true);
-    expect(isNotWhitespace('Hello  World')).toBe(true);
+describe("notWhitespace", () => {
+  it("should return true when the text is only comprised of whitespace", () => {
+    expect(isNotWhitespace(" %")).toBe(true);
+    expect(isNotWhitespace(" t ")).toBe(true);
+    expect(isNotWhitespace("Hello  World")).toBe(true);
     expect(isNotWhitespace(null as any)).toBe(false);
     expect(isNotWhitespace(undefined as any)).toBe(false);
   });
@@ -107,4 +107,3 @@ describe("numeric", () => {
     expect(numeric(undefined as any)).toBe("");
   });
 });
-

@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { ByteConverter } from "../src/bytes";
+import { describe, expect, it } from "vitest";
+import { ByteConverter } from "../src/bytes.ts";
 
 describe("ByteConverter", () => {
   describe("bytes", () => {

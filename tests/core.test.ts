@@ -1,9 +1,16 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { distinct, falsy, isEqual, isNotEqual, truthy } from "../src/core.ts";
 import { isEqualIgnoreCase, isNotEqualIgnoreCase } from "../src/core.ts";
-import { stringify, bool, reverse, sample, isEmpty, isNotEmpty } from "../src/core.ts";
-import { unique, clone } from "../src/core.ts";
-import { None, Some } from '../src/option.ts';
+import {
+  bool,
+  isEmpty,
+  isNotEmpty,
+  reverse,
+  sample,
+  stringify,
+} from "../src/core.ts";
+import { clone, unique } from "../src/core.ts";
+import { None, Some } from "../src/option.ts";
 
 describe("isEqual", () => {
   it("returns true for numbers and strings that match after stringify and trim", () => {
@@ -106,7 +113,7 @@ describe("bool", () => {
     expect(bool("hello")).toBe(true);
     expect(bool(42)).toBe(true);
     expect(bool("0")).toBe(true);
-    expect(bool(Some(''))).toBe(true);
+    expect(bool(Some(""))).toBe(true);
   });
 });
 
@@ -267,4 +274,3 @@ describe("falsy", () => {
     expect(falsy("hello")).toBe(false);
   });
 });
-

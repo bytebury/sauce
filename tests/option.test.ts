@@ -1,6 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
-import { None, Some } from "../src/option";
-import { isEven } from '../src/numbers';
+import { describe, expect, it, vi } from "vitest";
+import { None, Some } from "../src/option.ts";
+import { isEven } from "../src/numbers.ts";
+import { type UnknownRecord } from "../src/types.ts";
+import { upper } from "../src/strings.ts";
 
 describe("OptionConstructor / wrap / Some / None", () => {
   describe("Some", () => {
@@ -11,8 +13,8 @@ describe("OptionConstructor / wrap / Some / None", () => {
     });
 
     it("throws if given null or undefined", () => {
-      expect(() => Some(null as any)).toThrow();
-      expect(() => Some(undefined as any)).toThrow();
+      expect(() => Some(null as unknown as UnknownRecord)).toThrow();
+      expect(() => Some(undefined as unknown as UnknownRecord)).toThrow();
     });
   });
 
@@ -63,16 +65,16 @@ describe("OptionConstructor / wrap / Some / None", () => {
     it("isSomeAnd returns true if Some and predicate passes", () => {
       const opt = Some(4);
       expect(opt.isSomeAnd(isEven)).toBe(true);
-      expect(opt.isSomeAnd(n => n > 5)).toBe(false);
+      expect(opt.isSomeAnd((n) => n > 5)).toBe(false);
     });
 
     it("isSomeAnd returns false for None", () => {
       const opt = None;
-      expect(opt.isSomeAnd(isEven as any)).toBe(false);
+      expect(opt.isSomeAnd(isEven)).toBe(false);
     });
 
     it("isNoneOr returns true if None or predicate passes", () => {
-      expect(None.isNoneOr(isEven as any)).toBe(true);
+      expect(None.isNoneOr(isEven)).toBe(true);
       expect(Some(4).isNoneOr(isEven)).toBe(true);
       expect(Some(5).isNoneOr(isEven)).toBe(false);
     });
@@ -109,11 +111,11 @@ describe("OptionConstructor / wrap / Some / None", () => {
     });
 
     it("returns Some() when predicate returns true", () => {
-      expect(Some(42).filter(x => x > 0)).toEqual(Some(42));
+      expect(Some(42).filter((x) => x > 0)).toEqual(Some(42));
     });
 
     it("returns None when predicate returns false", () => {
-      expect(Some(42).filter(x => x < 0)).toEqual(None);
+      expect(Some(42).filter((x) => x < 0)).toEqual(None);
     });
   });
 
@@ -134,23 +136,22 @@ describe("OptionConstructor / wrap / Some / None", () => {
   });
   describe("map", () => {
     it("returns None when Option is None", () => {
-      expect(None.map(x => x)).toEqual(None);
+      expect(None.map((x) => x)).toEqual(None);
     });
 
     it("applies the function when Some()", () => {
-      expect(Some(2).map(x => x * 2)).toEqual(Some(4));
-      expect(Some("hi").map(s => s.toUpperCase())).toEqual(Some("HI"));
+      expect(Some(2).map((x) => x * 2)).toEqual(Some(4));
+      expect(Some("hi").map((s) => upper(s))).toEqual(Some("HI"));
     });
   });
 
   describe("mapOr", () => {
     it("returns the mapped value when Some()", () => {
-      expect(Some(3).mapOr(0, x => x * 3)).toBe(9);
+      expect(Some(3).mapOr(0, (x) => x * 3)).toBe(9);
     });
 
     it("returns the default when None", () => {
-      expect(None.mapOr(10, x => x)).toBe(10);
+      expect(None.mapOr(10, (x) => x)).toBe(10);
     });
   });
-
 });

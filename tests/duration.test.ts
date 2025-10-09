@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { Duration } from "../src/duration";
+import { describe, expect, it } from "vitest";
+import { Duration } from "../src/duration.ts";
 
 describe("Duration", () => {
   it("returns the same number of milliseconds", () => {

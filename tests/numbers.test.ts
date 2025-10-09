@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { isEven, isOdd, ordinalize } from "../src/numbers";
+import { describe, expect, it } from "vitest";
+import { isEven, isOdd, ordinalize } from "../src/numbers.ts";
 
 describe("isEven", () => {
   it("returns true for even numbers", () => {
@@ -60,9 +60,8 @@ describe("ordinalize", () => {
     expect(ordinalize(112)).toBe("112th");
   });
 
-  it('should treat null and undefined as 0', () => {
+  it("should treat null and undefined as 0", () => {
     expect(ordinalize(undefined as any)).toBe("0th");
     expect(ordinalize(null as any)).toBe("0th");
   });
 });
-

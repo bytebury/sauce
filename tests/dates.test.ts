@@ -1,6 +1,28 @@
-import { describe, it, expect } from 'vitest';
-import { addDays, addMonths, addYears, daysBetween, isFriday, isMonday, isSaturday, isSunday, isThursday, isTuesday, isWednesday, isWeekday, isWeekend, monthsBetween, now, subtractDays, subtractMonths, subtractYears, today, tomorrow, yearsBetween, yesterday } from '../src/dates.ts';
-
+import { describe, expect, it } from "vitest";
+import {
+  addDays,
+  addMonths,
+  addYears,
+  daysBetween,
+  isFriday,
+  isMonday,
+  isSaturday,
+  isSunday,
+  isThursday,
+  isTuesday,
+  isWednesday,
+  isWeekday,
+  isWeekend,
+  monthsBetween,
+  now,
+  subtractDays,
+  subtractMonths,
+  subtractYears,
+  today,
+  tomorrow,
+  yearsBetween,
+  yesterday,
+} from "../src/dates.ts";
 
 describe("now", () => {
   it("returns a Date object close to current time", () => {
@@ -119,4 +141,3 @@ describe("isWeekend / isWeekday", () => {
     expect(isWeekday(saturday)).toBe(false);
   });
 });
-

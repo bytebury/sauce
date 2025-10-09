@@ -1,3 +1,5 @@
+import { UnknownRecord } from "./types";
+
 /**
  * Represents a thing that may or may not have a value.
  *
@@ -56,7 +58,7 @@ export interface Option<T> {
    * None.unwrapOr(0); // 0
    * ```
    */
-  unwrapOr(value: T): T;
+  unwrapOr<U>(value: U): T | U;
   /**
    * Determines if the underlying value is something.
    *
@@ -93,7 +95,7 @@ export interface Option<T> {
   /**
    * Determines if the underlying value is `None`,
    * or if the predicate using that same value returns `true`.
-   * 
+   *
    * @example
    * ```ts
    * None.isNoneOr(() => false); // true
@@ -138,7 +140,7 @@ export interface Option<T> {
    * None.map(x => x * 3); // None
    * ```
    */
-  map(fn: (x: T) => T): Option<T>;
+  map<U>(fn: (x: T) => U): Option<U>;
   /**
    * Maps an `Option` to a value by applying the function when
    * the contained value is `Some`. If it is `None`, then it will
@@ -150,7 +152,7 @@ export interface Option<T> {
    * None.mapOr(0, x => x * 2); // 0
    * ```
    */
-  mapOr(defaultVal: T, fn: (x: T) => T): T;
+  mapOr<U>(defaultVal: U, fn: (x: T) => U): U;
   /**
    * Forces an unwrap of a null. This will always return
    * `null`, even if there is a value. This is only useful
@@ -194,7 +196,7 @@ export class OptionConstructor<T> implements Option<T> {
     return this.value as NonNullable<T>;
   }
 
-  unwrapOr(value: T): T {
+  unwrapOr<U>(value: U): T | U {
     if (this.isNone()) return value;
     return this.value;
   }
@@ -228,12 +230,12 @@ export class OptionConstructor<T> implements Option<T> {
     return this;
   }
 
-  map(fn: (x: T) => T): Option<T> {
+  map<U>(fn: (x: T) => U): Option<U> {
     if (this.isNone()) return None;
     return wrap(fn(this.value));
   }
 
-  mapOr(defaultVal: T, fn: (x: T) => T): T {
+  mapOr<U>(defaultVal: U, fn: (x: T) => U): U {
     if (this.isNone()) return defaultVal;
     return wrap(fn(this.value)).unwrapOr(defaultVal);
   }
@@ -248,7 +250,7 @@ export class OptionConstructor<T> implements Option<T> {
 }
 
 /**
- * Wraps a value that might be `null` or `undefined` and 
+ * Wraps a value that might be `null` or `undefined` and
  * turns it into an Option.
  */
 export function wrap<T>(value: T): Option<T> {
@@ -264,9 +266,9 @@ export function wrap<T>(value: T): Option<T> {
  */
 export function Some<T>(value: NonNullable<T>): Option<NonNullable<T>> {
   if (value === null || value === undefined) {
-    throw new Error('You are trying to put a None in a Some');
+    throw new Error("You are trying to put a None in a Some");
   }
-  return wrap(value)
+  return wrap(value);
 }
 
 /**
