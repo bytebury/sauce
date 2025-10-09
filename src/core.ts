@@ -1,6 +1,6 @@
-import { isWhitespace, lower } from "./strings.ts";
+import { isWhitespace, lower } from "./strings";
 import type { OneOrMany, UnknownList } from "./types.ts";
-import { None, type Option, OptionConstructor, Some } from "./option.ts";
+import { None, type Option, OptionConstructor, Some } from "./option";
 
 /**
  * Compares two things by turning them into strings,
