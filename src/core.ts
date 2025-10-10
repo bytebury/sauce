@@ -1,5 +1,5 @@
 import { isWhitespace, lower } from "./strings";
-import type { OneOrMany, UnknownList } from "./types.ts";
+import type { OneOrMany, UnknownList } from "./types";
 import { None, type Option, OptionConstructor, Some } from "./option";
 
 /**
