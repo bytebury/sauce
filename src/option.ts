@@ -128,6 +128,17 @@ export interface Option<T> {
    */
   inspect(fn: (x: T) => void): Option<T>;
   /**
+   * Returns the option if it contains a value, otherwise will return
+   * other.
+   *
+   * @example
+   * ```ts
+   * Some(2).or(Some(3)); // Some(2)
+   * Some(None).or(Some(4)); // Some(4)
+   * ```
+   */
+  or<U>(other: Option<U>): Option<T | U>;
+  /**
    * Maps an `Option` to `Option` by applying the function when
    * the contained value is `Some`. If it is `None`, then it will
    * return `None`.
@@ -178,7 +189,7 @@ export interface Option<T> {
 }
 
 export class OptionConstructor<T> implements Option<T> {
-  constructor(private readonly value: T) {}
+  constructor(private readonly value: T) { }
 
   unwrap(): NonNullable<T> {
     if (this.isNone()) {
@@ -225,6 +236,11 @@ export class OptionConstructor<T> implements Option<T> {
 
   inspect(fn: (x: T) => void): Option<T> {
     fn(this.value);
+    return wrap(this.value);
+  }
+
+  or<U>(other: Option<U>): Option<T | U> {
+    if (this.isNone()) return other;
     return this;
   }
 

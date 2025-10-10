@@ -145,6 +145,16 @@ describe("OptionConstructor / wrap / Some / None", () => {
     });
   });
 
+  describe("or", () => {
+    it("returns the current option when Some()", () => {
+      expect(Some(3).or(Some(5)).unwrap()).toBe(3);
+    });
+
+    it("returns the value from .or() when None", () => {
+      expect(None.or(Some(5)).unwrap()).toBe(5);
+    });
+  });
+
   describe("mapOr", () => {
     it("returns the mapped value when Some()", () => {
       expect(Some(3).mapOr(0, (x) => x * 3)).toBe(9);
