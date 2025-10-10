@@ -189,7 +189,7 @@ export interface Option<T> {
 }
 
 export class OptionConstructor<T> implements Option<T> {
-  constructor(private readonly value: T) { }
+  constructor(private readonly value: T) {}
 
   unwrap(): NonNullable<T> {
     if (this.isNone()) {
