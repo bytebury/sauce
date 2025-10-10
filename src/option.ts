@@ -129,7 +129,8 @@ export interface Option<T> {
   inspect(fn: (x: T) => void): Option<T>;
   /**
    * Returns the option if it contains a value, otherwise will return
-   * other.
+   * other, which is an `Option`. Very similar to `unwrap_or`, except
+   * this will return another `Option` instead of a value.
    *
    * @example
    * ```ts
@@ -189,7 +190,7 @@ export interface Option<T> {
 }
 
 export class OptionConstructor<T> implements Option<T> {
-  constructor(private readonly value: T) {}
+  constructor(private readonly value: T) { }
 
   unwrap(): NonNullable<T> {
     if (this.isNone()) {
