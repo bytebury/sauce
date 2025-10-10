@@ -10,13 +10,17 @@ export function now(): Date {
  * Today's date at midnight.
  */
 export function today(): Date {
-  return new Date(now().setHours(0, 0, 0, 0));
+  const d = new Date(now());
+  d.setHours(0, 0, 0, 0);
+  return d;
 }
 /**
  * Tomorrow's date at midnight.
  */
 export function tomorrow(): Date {
-  return addDays(today(), 1);
+  const d = new Date(now());
+  d.setHours(0, 0, 0, 0);
+  return addDays(d, 1);
 }
 /**
  * Yesterday's date at midnight.
@@ -153,4 +157,28 @@ export function isWeekend(date: Date): boolean {
 
 export function isWeekday(date: Date): boolean {
   return !isWeekend(date);
+}
+
+/**
+ * Determines if the date is in the past.
+ */
+export function isInPast(date: Date): boolean {
+  return date < today();
+}
+/**
+ * Determines if the date is in the future.
+ *
+ * @remarks
+ * this is date specific. So, if it is 1:00 PM and you pass
+ * a date that is today at 2:00 PM, it will return false, because
+ * the "date" is the same.
+ */
+export function isInFuture(date: Date): boolean {
+  return date >= tomorrow();
+}
+/**
+ * Determines if the date is today.
+ */
+export function isToday(date: Date): boolean {
+  return !isInFuture(date) && !isInPast(date);
 }
