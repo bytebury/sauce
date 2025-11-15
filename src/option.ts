@@ -265,14 +265,6 @@ export class OptionConstructor<T> implements Option<T> {
 }
 
 /**
- * Wraps a value that might be `null` or `undefined` and
- * turns it into an Option.
- */
-export function wrap<T>(value: T): Option<T> {
-  return new OptionConstructor(value);
-}
-
-/**
  * An `Option` that will always have some value.
  *
  * You cannot put null into a Some.
@@ -292,3 +284,11 @@ export function Some<T>(value: NonNullable<T>): Option<NonNullable<T>> {
  * @remarks A `None` is `null` or `undefined`.
  */
 export const None: Option<never> = wrap(null as never);
+
+/**
+ * Wraps a value that might be `null` or `undefined` and
+ * turns it into an Option.
+ */
+export function wrap<T>(value: T | null | undefined): Option<T> {
+  return new OptionConstructor(value as T);
+}
