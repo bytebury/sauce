@@ -20,32 +20,17 @@ export interface Option<T> {
    * @throws
    * An error when the underlying value is `None`.
    *
+   * @param message optional message to include when an error is thrown.
+   *
    * @example
    * ```ts
    * Some(42).unwrap(); // 42
-   * None.unwrap(); // throws Error
+   * Some("hi").orThrow();
+   * None.orThrow(); // throws Error
+   * None.orThrow("This is a custom error message"); // throws error with custom message
    * ```
    */
-  unwrap(): NonNullable<T>;
-  /**
-   * Unwraps the underlying value and returns it.
-   * If the value is `None` then this function
-   * will throw an error with the given message.
-   *
-   * @remarks
-   * Usually preferred over `unwrap`.
-   *
-   * @throws
-   * An error when the underlying value is `None`.
-   * This error will contain the provided message.
-   *
-   * @example
-   * ```ts
-   * Some("hi").expect("should never fail"); // "hi"
-   * None.expect("missing value"); // throws Error("missing value")
-   * ```
-   */
-  expect(message: string): NonNullable<T>;
+  orThrow(message?: string): NonNullable<T>;
   /**
    * Unwraps the underlying value, or returns the given
    * value if the underlying value is `None`.
@@ -192,16 +177,11 @@ export interface Option<T> {
 export class OptionConstructor<T> implements Option<T> {
   constructor(private readonly value: T) { }
 
-  unwrap(): NonNullable<T> {
+  orThrow(message?: string): NonNullable<T> {
     if (this.isNone()) {
-      throw new Error("Trying to unwrap a value that is null or undefined.");
-    }
-    return this.value as NonNullable<T>;
-  }
-
-  expect(message: string): NonNullable<T> {
-    if (this.isNone()) {
-      throw new Error(message);
+      throw new Error(
+        message || "Trying to unwrap a value that is null or undefined.",
+      );
     }
     return this.value as NonNullable<T>;
   }

@@ -9,7 +9,7 @@ describe("OptionConstructor / wrap / Some / None", () => {
     it("creates a Some for non-null/undefined values", () => {
       const some = Some(42);
       expect(some.isSome()).toBe(true);
-      expect(some.unwrap()).toBe(42);
+      expect(some.orThrow()).toBe(42);
     });
 
     it("throws if given null or undefined", () => {
@@ -25,15 +25,20 @@ describe("OptionConstructor / wrap / Some / None", () => {
     });
   });
 
-  describe("unwrap", () => {
+  describe("orThrow", () => {
     it("returns the underlying value if Some", () => {
       const opt = Some(99);
-      expect(opt.unwrap()).toBe(99);
+      expect(opt.orThrow()).toBe(99);
     });
 
     it("throws if the value is None", () => {
       const opt = None;
-      expect(() => opt.unwrap()).toThrow();
+      expect(() => opt.orThrow()).toThrow();
+    });
+
+    it("should include the custom error message in the thrown error", () => {
+      expect(() => None.orThrow("missing value")).toThrow("missing value");
+      expect(() => None.orThrow("nope")).toThrow("nope");
     });
   });
 
@@ -92,18 +97,6 @@ describe("OptionConstructor / wrap / Some / None", () => {
     });
   });
 
-  describe("expect", () => {
-    it("returns the inner value when Some()", () => {
-      expect(Some(42).expect("should not throw")).toBe(42);
-      expect(Some("hi").expect("should not throw")).toBe("hi");
-    });
-
-    it("throws an error with the provided message when None", () => {
-      expect(() => None.expect("missing value")).toThrow("missing value");
-      expect(() => None.expect("nope")).toThrow("nope");
-    });
-  });
-
   describe("filter", () => {
     it("returns None() when Option is None", () => {
       expect(None.filter(() => true)).toEqual(None);
@@ -147,11 +140,11 @@ describe("OptionConstructor / wrap / Some / None", () => {
 
   describe("or", () => {
     it("returns the current option when Some()", () => {
-      expect(Some(3).or(Some(5)).unwrap()).toBe(3);
+      expect(Some(3).or(Some(5)).orThrow()).toBe(3);
     });
 
     it("returns the value from .or() when None", () => {
-      expect(None.or(Some(5)).unwrap()).toBe(5);
+      expect(None.or(Some(5)).orThrow()).toBe(5);
     });
   });
 
