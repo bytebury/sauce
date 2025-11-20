@@ -57,10 +57,10 @@ export type UnknownRecord = Record<PropertyKey, unknown>;
 
 /**
  * Represents a list with `unknown` values. Useful for when you
- * want a type that all ararys can be assigned to, but you don't care
+ * want a type that all lists can be assigned to, but you don't care
  * about the value.
  */
-export type UnknownList = readonly unknown[];
+export type UnknownList = unknown[];
 
 /**
  * Represents a set with `unknown` values.

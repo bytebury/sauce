@@ -291,7 +291,7 @@ export function distinct<T>(list: T[]): T[] {
  * const randomItem = sample(myList);
  *
  * if (randomItem.isSome()) {
- *   console.log(randomItem.unwrap()); // could be 1, 2, 3, or 4
+ *   console.log(randomItem.orThrow()); // could be 1, 2, 3, or 4
  * } else {
  *   console.log('No item found');
  * }

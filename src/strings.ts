@@ -38,7 +38,7 @@ export function isNotWhitespace(text: string): boolean {
  *
  * @example
  * trim(null); // ""
- * trim(" HELLO WORLD    \n"); // ""
+ * trim(" HELLO WORLD    \n"); // "HELLO WORLD"
  * [' hello ', ' world '].map(trim); // ['hello', 'world'];
  */
 export function trim(text: string): string {

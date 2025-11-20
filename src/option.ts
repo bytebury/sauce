@@ -24,8 +24,8 @@ export interface Option<T> {
    *
    * @example
    * ```ts
-   * Some(42).unwrap(); // 42
-   * Some("hi").orThrow();
+   * Some(42).orThrow(); // 42
+   * Some("hi").orThrow(); // "hi"
    * None.orThrow(); // throws Error
    * None.orThrow("This is a custom error message"); // throws error with custom message
    * ```
