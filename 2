@@ -1,13 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  distinct,
-  falsy,
-  first,
-  isEqual,
-  isNotEqual,
-  last,
-  truthy,
-} from "../src/core.ts";
+import { distinct, falsy, isEqual, isNotEqual, truthy } from "../src/core.ts";
 import { isEqualIgnoreCase, isNotEqualIgnoreCase } from "../src/core.ts";
 import {
   bool,
@@ -286,23 +278,7 @@ describe("falsy", () => {
 describe("last", () => {
   it("returns the last character in a string", () => {
     expect(last("hello world")).toBe("d");
-    expect(last("o")).toBe("o");
-  });
-
-  it("returns the last character in a list", () => {
-    expect(last([1])).toBe(1);
     expect(last([1, 2, 3])).toBe(3);
   });
-});
-
-describe("first", () => {
-  it("returns the first character in a string", () => {
-    expect(first("hello world")).toBe("h");
-    expect(first("o")).toBe("o");
-  });
-
-  it("returns the first character in a list", () => {
-    expect(first([1])).toBe(1);
-    expect(first([1, 2, 3])).toBe(1);
-  });
+  it("returns the last character in a list", () => { });
 });

@@ -1,5 +1,5 @@
 import { isWhitespace, lower } from "./strings";
-import type { OneOrMany, UnknownList } from "./types";
+import type { NonEmptyList, OneOrMany, UnknownList } from "./types";
 import { None, type Option, OptionConstructor, Some } from "./option";
 
 /**
@@ -16,6 +16,30 @@ import { None, type Option, OptionConstructor, Some } from "./option";
  */
 export function isEqual(thing1: unknown, thing2: unknown): boolean {
   return stringify(thing1) === stringify(thing2);
+}
+
+/**
+ * Returns the last thing in a list. If the value
+ * is a string, then it will return the last character.
+ *
+ * @example
+ * last("hello"); // "o"
+ * last([1, 2, 3]); // 3
+ */
+export function last(value: string | NonEmptyList<unknown>): unknown {
+  return value[value.length - 1];
+}
+
+/**
+ * Returns the first thing in a list. If the value
+ * is a string, then it will return the first character.
+ *
+ * @example
+ * first("hello"); // "h"
+ * first([1, 2, 3]); // 1
+ */
+export function first(value: string | NonEmptyList<unknown>): unknown {
+  return value[0];
 }
 
 /**
