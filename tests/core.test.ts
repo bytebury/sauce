@@ -202,7 +202,7 @@ describe("isEmpty", () => {
   it("returns false for OptionConstructor that is Some", () => {
     const someOption = Some(42);
     expect(isEmpty(someOption)).toBe(false);
-    expect(someOption.orThrow()).toBe(42);
+    expect(someOption.expect()).toBe(42);
   });
 });
 
@@ -247,7 +247,7 @@ describe("sample", () => {
   it("returns one of the elements for non-empty array", () => {
     const list = [1, 2, 3, 4, 5];
     const result = sample(list);
-    expect(list).toContain(result.orThrow());
+    expect(list).toContain(result.expect());
   });
 });
 

@@ -24,13 +24,13 @@ export interface Option<T> {
    *
    * @example
    * ```ts
-   * Some(42).orThrow(); // 42
-   * Some("hi").orThrow(); // "hi"
-   * None.orThrow(); // throws Error
-   * None.orThrow("This is a custom error message"); // throws error with custom message
+   * Some(42).expect(); // 42
+   * Some("hi").expect(); // "hi"
+   * None.expect(); // throws Error
+   * None.expect("This is a custom error message"); // throws error with custom message
    * ```
    */
-  orThrow(message?: string): NonNullable<T>;
+  expect(message?: string): NonNullable<T>;
   /**
    * Unwraps the underlying value, or returns the given
    * value if the underlying value is `None`.
@@ -177,10 +177,11 @@ export interface Option<T> {
 export class OptionConstructor<T> implements Option<T> {
   constructor(private readonly value: T) { }
 
-  orThrow(message?: string): NonNullable<T> {
+  expect(message?: string): NonNullable<T> {
     if (this.isNone()) {
       throw new Error(
-        message || "Trying to unwrap a value that is null or undefined.",
+        message ||
+        "@bytebury/sauce: trying to unwrap a value that is null or undefined.",
       );
     }
     return this.value as NonNullable<T>;

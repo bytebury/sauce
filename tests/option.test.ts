@@ -9,7 +9,7 @@ describe("OptionConstructor / wrap / Some / None", () => {
     it("creates a Some for non-null/undefined values", () => {
       const some = Some(42);
       expect(some.isSome()).toBe(true);
-      expect(some.orThrow()).toBe(42);
+      expect(some.expect()).toBe(42);
     });
 
     it("throws if given null or undefined", () => {
@@ -25,20 +25,25 @@ describe("OptionConstructor / wrap / Some / None", () => {
     });
   });
 
-  describe("orThrow", () => {
+  describe("expect", () => {
     it("returns the underlying value if Some", () => {
       const opt = Some(99);
-      expect(opt.orThrow()).toBe(99);
+      expect(opt.expect()).toBe(99);
     });
 
     it("throws if the value is None", () => {
       const opt = None;
-      expect(() => opt.orThrow()).toThrow();
+      expect(() => opt.expect()).toThrow();
+      expect(() => opt.expect()).toThrow(
+        "@bytebury/sauce: trying to unwrap a value that is null or undefined.",
+      );
     });
 
     it("should include the custom error message in the thrown error", () => {
-      expect(() => None.orThrow("missing value")).toThrow("missing value");
-      expect(() => None.orThrow("nope")).toThrow("nope");
+      expect(() => None.expect("missing value")).toThrow(
+        "missing value",
+      );
+      expect(() => None.expect("nope")).toThrow("nope");
     });
   });
 
@@ -140,11 +145,11 @@ describe("OptionConstructor / wrap / Some / None", () => {
 
   describe("or", () => {
     it("returns the current option when Some()", () => {
-      expect(Some(3).or(Some(5)).orThrow()).toBe(3);
+      expect(Some(3).or(Some(5)).expect()).toBe(3);
     });
 
     it("returns the value from .or() when None", () => {
-      expect(None.or(Some(5)).orThrow()).toBe(5);
+      expect(None.or(Some(5)).expect()).toBe(5);
     });
   });
 
