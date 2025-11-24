@@ -1,4 +1,4 @@
-import { days } from "./duration.ts";
+import { days } from "./duration";
 
 /**
  * Right now. This is an alias for `new Date()`.
