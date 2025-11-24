@@ -126,10 +126,7 @@ export function isNotEqualIgnoreCase(
  * stringify(1); // "1"
  */
 export function stringify(thing: unknown): string {
-  if (typeof thing === "object") {
-    return JSON.stringify(thing);
-  }
-  return String(thing);
+  return typeof thing === "object" ? JSON.stringify(thing) : String(thing);
 }
 
 /**
@@ -178,14 +175,8 @@ export function reverse<T>(thing: Set<T>): Set<T>;
 export function reverse<T>(
   thing: string | Set<T> | T[],
 ): string | Set<T> | T[] {
-  if (typeof thing === "string") {
-    return thing.split("").reverse().join("");
-  }
-
-  if (thing instanceof Set) {
-    return new Set([...thing].reverse());
-  }
-
+  if (typeof thing === "string") return thing.split("").reverse().join("");
+  if (thing instanceof Set) return new Set([...thing].reverse());
   return thing.reverse();
 }
 
@@ -214,23 +205,10 @@ export function isEmpty(thing: UnknownList): boolean;
 export function isEmpty(thing: unknown): boolean;
 export function isEmpty(thing: string | UnknownList | unknown): boolean {
   if (isNone(thing)) return true;
-
-  if (typeof thing === "string") {
-    return isWhitespace(thing);
-  }
-
-  if (Array.isArray(thing)) {
-    return thing.length === 0;
-  }
-
-  if (thing instanceof Map || thing instanceof Set) {
-    return thing.size === 0;
-  }
-
-  if (typeof thing === "object") {
-    return Object.keys(thing!).length === 0;
-  }
-
+  if (typeof thing === "string") return isWhitespace(thing);
+  if (Array.isArray(thing)) return thing.length === 0;
+  if (thing instanceof Map || thing instanceof Set) return thing.size === 0;
+  if (typeof thing === "object") return Object.keys(thing!).length === 0;
   return false;
 }
 
