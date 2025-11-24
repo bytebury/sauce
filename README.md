@@ -122,8 +122,8 @@ tweaks to our code, but they really help the future developers.
 // You might often see this:
 setTimeout(() => {/* omit */}, 1_800_000); // ⚠️ we'd have to think about this...
 
-// Instead, we offer the `Duration` object:
-setTimeout(() => {/* omit */}, Duration.minutes(30)); // ✅ readable
+// Instead, we offer helpers:
+setTimeout(() => {/* omit */}, minutes(30)); // ✅ readable
 ```
 
 Sauce also supplies types that every application can benefit from. You can read

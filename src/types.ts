@@ -105,4 +105,9 @@ export type Nullish<T> = T | undefined | null;
  */
 export type Prettify<T> = { [K in keyof T]: T[K] } & {};
 
+/**
+ * Represents a byte unit.
+ */
 export type ByteUnit = "KB" | "MB" | "GB" | "TB" | "TB";
+
+export type Nothing = null | undefined;

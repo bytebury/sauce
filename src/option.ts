@@ -1,3 +1,5 @@
+import { type Nothing } from "./types";
+
 /**
  * Represents a thing that may or may not have a value.
  *
@@ -175,13 +177,13 @@ export interface Option<T> {
 }
 
 export class OptionConstructor<T> implements Option<T> {
-  constructor(private readonly value: T) { }
+  constructor(private readonly value: T) {}
 
   expect(message?: string): NonNullable<T> {
     if (this.isNone()) {
       throw new Error(
         message ||
-        "@bytebury/sauce: trying to unwrap a value that is null or undefined.",
+          "@bytebury/sauce: trying to unwrap a value that is null or undefined.",
       );
     }
     return this.value as NonNullable<T>;
@@ -270,6 +272,6 @@ export const None: Option<never> = wrap(null as never);
  * Wraps a value that might be `null` or `undefined` and
  * turns it into an Option.
  */
-export function wrap<T>(value: T | null | undefined): Option<T> {
+export function wrap<T>(value: T | Nothing): Option<T> {
   return new OptionConstructor(value as T);
 }
