@@ -1,5 +1,5 @@
 import { isWhitespace, lower } from "./strings";
-import type { NonEmptyList, OneOrMany, UnknownList } from "./types";
+import type { NonEmptyList, UnknownList } from "./types";
 
 /**
  * Compares two things by turning them into strings,
@@ -30,7 +30,9 @@ export function isEqual(thing1: unknown, thing2: unknown): boolean {
  */
 export function first<T>(list: NonEmptyList<T>): T;
 export function first(value: string): string;
-export function first<T>(value: string | NonEmptyList<T>): T {
+export function first<T>(
+  value: string | NonEmptyList<T>,
+): T | string | undefined {
   return value[0];
 }
 
@@ -47,7 +49,9 @@ export function first<T>(value: string | NonEmptyList<T>): T {
  */
 export function last<T>(list: NonEmptyList<T>): T;
 export function last(value: string): string;
-export function last<T>(value: string | NonEmptyList<unknown>): T | unknown {
+export function last<T>(
+  value: string | NonEmptyList<T>,
+): T | string | undefined {
   return value[value.length - 1];
 }
 
@@ -328,4 +332,30 @@ export function truthy(thing: unknown): boolean {
  */
 export function falsy(thing: unknown): boolean {
   return !truthy(thing);
+}
+
+/**
+ * Returns true if the given value is not null or undefined.
+ *
+ * @example
+ * isSome(null); // false
+ * isSome(undefined); // false
+ * isSome(0); // true
+ * isSome({}); // true
+ */
+export function isSome(thing: unknown): boolean {
+  return thing !== null && thing !== undefined;
+}
+
+/**
+ * Returns true if the given value is null or undefined.
+ *
+ * @example
+ * isNothing(null); // true
+ * isNothing(undefined); // true
+ * isNothing(true); // false
+ * isNothing(0); // false
+ */
+export function isNothing(thing: unknown): boolean {
+  return thing === null || thing === undefined;
 }

@@ -5,6 +5,8 @@ import {
   first,
   isEqual,
   isNotEqual,
+  isNothing,
+  isSome,
   last,
   rand,
   truthy,
@@ -316,5 +318,35 @@ describe("rand", () => {
       expect(value).toBeGreaterThanOrEqual(0);
       expect(value).toBeLessThan(5);
     }
+  });
+});
+
+describe("isSome", () => {
+  it("should return false when the value is null or undefined", () => {
+    expect(isSome(null)).toBe(false);
+    expect(isSome(undefined)).toBe(false);
+  });
+
+  it("should return true when the value is something", () => {
+    expect(isSome(0)).toBe(true);
+    expect(isSome(1)).toBe(true);
+    expect(isSome("")).toBe(true);
+    expect(isSome("Something")).toBe(true);
+    expect(isSome([])).toBe(true);
+  });
+});
+
+describe("isNothing", () => {
+  it("should return true when the value is null or undefined", () => {
+    expect(isNothing(null)).toBe(true);
+    expect(isNothing(undefined)).toBe(true);
+  });
+
+  it("should return false when the value is something", () => {
+    expect(isNothing(0)).toBe(false);
+    expect(isNothing(1)).toBe(false);
+    expect(isNothing("")).toBe(false);
+    expect(isNothing("Something")).toBe(false);
+    expect(isNothing([])).toBe(false);
   });
 });
