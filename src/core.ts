@@ -18,27 +18,37 @@ export function isEqual(thing1: unknown, thing2: unknown): boolean {
 }
 
 /**
- * Returns the last thing in a list. If the value
- * is a string, then it will return the last character.
- *
- * @example
- * last("hello"); // "o"
- * last([1, 2, 3]); // 3
- */
-export function last(value: string | NonEmptyList<unknown>): unknown {
-  return value[value.length - 1];
-}
-
-/**
  * Returns the first thing in a list. If the value
  * is a string, then it will return the first character.
+ *
+ * @remarks
+ * If an empty list is passed then this will return undefined.
  *
  * @example
  * first("hello"); // "h"
  * first([1, 2, 3]); // 1
  */
-export function first(value: string | NonEmptyList<unknown>): unknown {
+export function first<T>(list: NonEmptyList<T>): T;
+export function first(value: string): string;
+export function first<T>(value: string | NonEmptyList<T>): T {
   return value[0];
+}
+
+/**
+ * Returns the last thing in a list. If the value
+ * is a string, then it will return the last character.
+ *
+ * @remarks
+ * If an empty list is passed then this will return undefined.
+ *
+ * @example
+ * last("hello"); // "o"
+ * last([1, 2, 3]); // 3
+ */
+export function last<T>(list: NonEmptyList<T>): T;
+export function last(value: string): string;
+export function last<T>(value: string | NonEmptyList<unknown>): T | unknown {
+  return value[value.length - 1];
 }
 
 /**
@@ -111,7 +121,7 @@ export function isNotEqualIgnoreCase(
  * stringify([1, 2, 3]); // "[1, 2, 3]"
  * stringify(1); // "1"
  */
-export function stringify<T>(thing: T): string {
+export function stringify(thing: unknown): string {
   if (typeof thing === "object") {
     return JSON.stringify(thing);
   }
@@ -134,7 +144,7 @@ export function stringify<T>(thing: T): string {
  * bool({}); // true
  * bool("Hello World"); // true
  */
-export function bool<T>(thing: OneOrMany<T>): boolean {
+export function bool(thing: unknown): boolean {
   return Boolean(thing);
 }
 
@@ -160,10 +170,10 @@ export function clone<T>(thing: T): T {
  */
 export function reverse(thing: string): string;
 export function reverse<T>(thing: T[]): T[];
-export function reverse(thing: Set<unknown>): Set<unknown>;
+export function reverse<T>(thing: Set<T>): Set<T>;
 export function reverse<T>(
-  thing: string | Set<unknown> | T[],
-): string | Set<unknown> | T[] {
+  thing: string | Set<T> | T[],
+): string | Set<T> | T[] {
   if (typeof thing === "string") {
     return thing.split("").reverse().join("");
   }

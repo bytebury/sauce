@@ -19,7 +19,6 @@ import {
   stringify,
 } from "../src/core.ts";
 import { clone, unique } from "../src/core.ts";
-import { NonEmptyList } from "../dist/types.d.ts";
 
 describe("isEqual", () => {
   it("returns true for numbers and strings that match after stringify and trim", () => {
