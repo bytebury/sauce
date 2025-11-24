@@ -1,6 +1,5 @@
 import { isWhitespace, lower } from "./strings";
 import type { NonEmptyList, OneOrMany, UnknownList } from "./types";
-import { None, type Option, OptionConstructor, Some } from "./option";
 
 /**
  * Compares two things by turning them into strings,
@@ -122,25 +121,20 @@ export function stringify<T>(thing: T): string {
 /**
  * Converts the given parameter to a boolean.
  *
- * This is the same as doing `Boolean(value)` however, if the `value` is
- * a string containing only whitespace, this function will consider that
- * an empty string, and therefore return `false`.
+ * @remarks
+ * This is syntactic sugar for `Boolean(value)`.
  *
  * @example
  * bool("false"); // true
  * bool("true"); // true
  * bool(""); // false
- * bool("   "); // false
+ * bool("   "); // true
  * bool(false); // false
  * bool("null"); // true
  * bool({}); // true
  * bool("Hello World"); // true
- * bool(wrap(null)); // false
- * bool(wrap('')); // true
  */
 export function bool<T>(thing: OneOrMany<T>): boolean {
-  if (typeof thing === "string") return isNotEmpty(thing);
-  if (thing instanceof OptionConstructor) return thing.isSome();
   return Boolean(thing);
 }
 
@@ -202,14 +196,9 @@ export function reverse<T>(
  * isEmpty(wrap('')); // false
  * isEmpty(wrap(' ')); // false
  */
-export function isEmpty(thing: Option<unknown>): boolean;
 export function isEmpty(thing: UnknownList): boolean;
 export function isEmpty(thing: unknown): boolean;
 export function isEmpty(thing: string | UnknownList | unknown): boolean {
-  if (
-    thing instanceof OptionConstructor &&
-    (thing as OptionConstructor<unknown>).isNone()
-  ) return true;
   if (thing === null || thing === undefined) return true;
 
   if (typeof thing === "string") {
@@ -244,10 +233,7 @@ export function isEmpty(thing: string | UnknownList | unknown): boolean {
  * isNotEmpty(new Set()); // false
  * isNotEmpty({}); // false
  * isNotEmpty(new Map()); // false
- * isNotEmpty(wrap(null)); // true
- * isNotEmpty(wrap('')); // false
- * isNotEmpty(wrap(' ')); // false */
-export function isNotEmpty(thing: Option<unknown>): boolean;
+ */
 export function isNotEmpty(thing: UnknownList): boolean;
 export function isNotEmpty(thing: unknown): boolean;
 export function isNotEmpty(thing: string | UnknownList | unknown): boolean {
@@ -284,24 +270,17 @@ export function distinct<T>(list: T[]): T[] {
  * Pick a random item from an array.
  *
  * @remarks
- * This will always return `None` if the list is empty.
+ * If you pass an empty list, then this function will return `undefined`.
  *
  * @example
  * const myList = [1, 2, 3, 4];
  * const randomItem = sample(myList);
  *
- * if (randomItem.isSome()) {
- *   console.log(randomItem.expect()); // could be 1, 2, 3, or 4
- * } else {
- *   console.log('No item found');
- * }
+ * console.log(randomItem); // could be 1, 2, 3, or 4
+ * console.log(sample([])); // undefined
  */
-export function sample<T>(list: T[]): Option<T> {
-  if (list.length) {
-    const value = list[Math.floor(Math.random() * list.length)];
-    if (value) return Some(value);
-  }
-  return None;
+export function sample<T>(list: NonEmptyList<T>): T | undefined {
+  return list[Math.floor(Math.random() * list.length)];
 }
 
 /**

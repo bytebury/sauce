@@ -19,7 +19,7 @@ import {
   stringify,
 } from "../src/core.ts";
 import { clone, unique } from "../src/core.ts";
-import { None, Some } from "../src/option.ts";
+import { NonEmptyList } from "../dist/types.d.ts";
 
 describe("isEqual", () => {
   it("returns true for numbers and strings that match after stringify and trim", () => {
@@ -113,8 +113,7 @@ describe("bool", () => {
     expect(bool(false)).toBe(false);
     expect(bool(0)).toBe(false);
     expect(bool("")).toBe(false);
-    expect(bool("   ")).toBe(false);
-    expect(bool(None)).toBe(false);
+    expect(bool("   ")).toBe(true);
   });
 
   it("returns true for other truthy values", () => {
@@ -122,7 +121,6 @@ describe("bool", () => {
     expect(bool("hello")).toBe(true);
     expect(bool(42)).toBe(true);
     expect(bool("0")).toBe(true);
-    expect(bool(Some(""))).toBe(true);
   });
 });
 
@@ -194,17 +192,6 @@ describe("isEmpty", () => {
     expect(isEmpty(new Set([1]))).toBe(false);
     expect(isEmpty(new Map([["key", "value"]]))).toBe(false);
   });
-
-  it("returns true for OptionConstructor that is None", () => {
-    const noneOption = None;
-    expect(isEmpty(noneOption)).toBe(true);
-  });
-
-  it("returns false for OptionConstructor that is Some", () => {
-    const someOption = Some(42);
-    expect(isEmpty(someOption)).toBe(false);
-    expect(someOption.expect()).toBe(42);
-  });
 });
 
 describe("isNotEmpty", () => {
@@ -241,14 +228,13 @@ describe("distinct", () => {
 
 describe("sample", () => {
   it("returns undefined wrapped in Option for empty array", () => {
-    const result = sample([]);
-    expect(result.isNone()).toBe(true);
+    expect(sample([])).toBeUndefined();
   });
 
   it("returns one of the elements for non-empty array", () => {
     const list = [1, 2, 3, 4, 5];
     const result = sample(list);
-    expect(list).toContain(result.expect());
+    expect(list).toContain(result);
   });
 });
 

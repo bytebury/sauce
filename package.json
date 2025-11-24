@@ -1,7 +1,7 @@
 {
   "name": "@bytebury/sauce",
-  "version": "1.22.0",
-  "description": "🍅 A functional base layer for any project. Sauce is a generic helper library for any sized project to help get you write cleaner code.",
+  "version": "2.0.0",
+  "description": "🍅 a strongly typed and safe utility library to bring correctness and security to your TypeScript applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
