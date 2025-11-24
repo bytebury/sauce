@@ -213,7 +213,7 @@ export function reverse<T>(
 export function isEmpty(thing: UnknownList): boolean;
 export function isEmpty(thing: unknown): boolean;
 export function isEmpty(thing: string | UnknownList | unknown): boolean {
-  if (thing === null || thing === undefined) return true;
+  if (isNone(thing)) return true;
 
   if (typeof thing === "string") {
     return isWhitespace(thing);
@@ -228,7 +228,7 @@ export function isEmpty(thing: string | UnknownList | unknown): boolean {
   }
 
   if (typeof thing === "object") {
-    return Object.keys(thing).length === 0;
+    return Object.keys(thing!).length === 0;
   }
 
   return false;
@@ -344,18 +344,18 @@ export function falsy(thing: unknown): boolean {
  * isSome({}); // true
  */
 export function isSome(thing: unknown): boolean {
-  return thing !== null && thing !== undefined;
+  return !isNone(thing);
 }
 
 /**
  * Returns true if the given value is null or undefined.
  *
  * @example
- * isNothing(null); // true
- * isNothing(undefined); // true
- * isNothing(true); // false
- * isNothing(0); // false
+ * isNone(null); // true
+ * isNone(undefined); // true
+ * isNone(true); // false
+ * isNone(0); // false
  */
-export function isNothing(thing: unknown): boolean {
+export function isNone(thing: unknown): boolean {
   return thing === null || thing === undefined;
 }

@@ -97,7 +97,7 @@ export type NonEmptyList<T> = [T, ...T[]];
 /**
  * Represents a thing that might be `None` (null or undefined).
  */
-export type Nullish<T> = T | Nothing;
+export type Nullish<T> = T | None;
 
 /**
  * A utility type that takes an nobject type and makes the hover overlay
@@ -113,4 +113,4 @@ export type ByteUnit = "KB" | "MB" | "GB" | "TB" | "TB";
 /**
  * Syntactic sugar for `null | undefined`.
  */
-export type Nothing = null | undefined;
+export type None = null | undefined;

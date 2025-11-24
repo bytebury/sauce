@@ -4,8 +4,8 @@ import {
   falsy,
   first,
   isEqual,
+  isNone,
   isNotEqual,
-  isNothing,
   isSome,
   last,
   rand,
@@ -336,17 +336,17 @@ describe("isSome", () => {
   });
 });
 
-describe("isNothing", () => {
+describe("isNone", () => {
   it("should return true when the value is null or undefined", () => {
-    expect(isNothing(null)).toBe(true);
-    expect(isNothing(undefined)).toBe(true);
+    expect(isNone(null)).toBe(true);
+    expect(isNone(undefined)).toBe(true);
   });
 
   it("should return false when the value is something", () => {
-    expect(isNothing(0)).toBe(false);
-    expect(isNothing(1)).toBe(false);
-    expect(isNothing("")).toBe(false);
-    expect(isNothing("Something")).toBe(false);
-    expect(isNothing([])).toBe(false);
+    expect(isNone(0)).toBe(false);
+    expect(isNone(1)).toBe(false);
+    expect(isNone("")).toBe(false);
+    expect(isNone("Something")).toBe(false);
+    expect(isNone([])).toBe(false);
   });
 });
