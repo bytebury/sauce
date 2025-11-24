@@ -305,6 +305,19 @@ export function sample<T>(list: T[]): Option<T> {
 }
 
 /**
+ * Gives a random number in the given range. The first parameter is inclusive
+ * and the second one is exclusive. Therefore, it will work with lists out of
+ * the box.
+ *
+ * @example
+ * rand(0, 10); // 0 -> 9
+ * rand(3, 7); // 3 -> 6
+ */
+export function rand(start: number, end: number): number {
+  return Math.floor(Math.random() * (end - start)) + start;
+}
+
+/**
  * Determines if the given value is truthy.
  *
  * @example

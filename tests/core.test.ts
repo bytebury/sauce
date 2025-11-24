@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import {
   distinct,
   falsy,
@@ -6,6 +6,7 @@ import {
   isEqual,
   isNotEqual,
   last,
+  rand,
   truthy,
 } from "../src/core.ts";
 import { isEqualIgnoreCase, isNotEqualIgnoreCase } from "../src/core.ts";
@@ -304,5 +305,31 @@ describe("first", () => {
   it("returns the first character in a list", () => {
     expect(first([1])).toBe(1);
     expect(first([1, 2, 3])).toBe(1);
+  });
+});
+
+describe("rand", () => {
+  const originalRandom = Math.random;
+
+  afterEach(() => {
+    Math.random = originalRandom;
+  });
+
+  it("returns the start value when Math.random() = 0", () => {
+    Math.random = () => 0;
+    expect(rand(3, 7)).toBe(3);
+  });
+
+  it("returns end - 1 when Math.random() is just below 1", () => {
+    Math.random = () => 0.9999999;
+    expect(rand(3, 7)).toBe(6);
+  });
+
+  it("produces values within the range over several samples", () => {
+    for (let i = 0; i < 100; i++) {
+      const value = rand(0, 5);
+      expect(value).toBeGreaterThanOrEqual(0);
+      expect(value).toBeLessThan(5);
+    }
   });
 });

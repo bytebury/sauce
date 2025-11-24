@@ -103,8 +103,6 @@ export type Nullish<T> = T | undefined | null;
  * A utility type that takes an nobject type and makes the hover overlay
  * more readable for the developer.
  */
-export type Prettify<T> =
-  & {
-    [K in keyof T]: T[K];
-  }
-  & {};
+export type Prettify<T> = { [K in keyof T]: T[K] } & {};
+
+export type ByteUnit = "KB" | "MB" | "GB" | "TB" | "TB";

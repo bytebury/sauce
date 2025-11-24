@@ -1,4 +1,4 @@
-import { Duration } from "./duration";
+import { days } from "./duration.ts";
 
 /**
  * Right now. This is an alias for `new Date()`.
@@ -81,7 +81,7 @@ export function subtractYears(date: Date, years: number): Date {
 export function daysBetween(start: Date, end: Date): number {
   return Math.abs(
     Math.floor(
-      (new Date(end).getTime() - new Date(start).getTime()) / Duration.days(1),
+      (new Date(end).getTime() - new Date(start).getTime()) / days(1),
     ),
   );
 }
