@@ -1,6 +1,6 @@
 {
   "name": "@bytebury/sauce",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "🍅 a strongly typed and safe utility library to bring correctness and security to your TypeScript applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

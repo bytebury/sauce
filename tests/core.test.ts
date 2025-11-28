@@ -9,6 +9,7 @@ import {
   isSome,
   last,
   rand,
+  sum,
   truthy,
 } from "../src/core.ts";
 import { isEqualIgnoreCase, isNotEqualIgnoreCase } from "../src/core.ts";
@@ -348,5 +349,22 @@ describe("isNone", () => {
     expect(isNone("")).toBe(false);
     expect(isNone("Something")).toBe(false);
     expect(isNone([])).toBe(false);
+  });
+});
+
+describe("sum", () => {
+  it("should return the sum of numbers in an array", () => {
+    expect(sum([1, 2, 3])).toBe(6);
+    expect(sum([1, 2, 3, 4])).toBe(10);
+    expect(sum([1, 2, 3, 4, 5])).toBe(15);
+  });
+
+  it("should sum the numbers based on the key provided", () => {
+    expect(sum([{ value: 1 }, { value: 2 }, { value: 3 }], "value")).toBe(6);
+    expect(sum([{ value: 1 }, { value: -1 }], "value")).toBe(0);
+  });
+
+  it("should return 0 for an empty array", () => {
+    expect(sum([])).toBe(0);
   });
 });

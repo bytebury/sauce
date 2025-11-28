@@ -1,6 +1,7 @@
 # sauce 🍅
 
-A functional base layer for any size application to help get you write clean, safe, and predictable code.
+A functional base layer for any size application to help get you write clean,
+safe, and predictable code.
 
 ## Installation
 
@@ -9,6 +10,7 @@ npm i --save @bytebury/sauce
 ```
 
 ## Usage
+
 ```ts
 import { isWhitespace, title } from "@bytebury/sauce";
 
@@ -22,4 +24,6 @@ function sayHelloTo(name?: string): void {
 ```
 
 ## Documentation
-You can see all of the available helpers on our [documentation website](https://sauce.pizzastate.dev).
+
+You can see all of the available helpers on our
+[documentation website](https://sauce.pizzastate.dev).

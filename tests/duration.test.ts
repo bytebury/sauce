@@ -45,4 +45,3 @@ describe("days", () => {
     expect(days(3)).toBe(259_200_000);
   });
 });
-

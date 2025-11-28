@@ -337,3 +337,27 @@ export function isSome(thing: unknown): boolean {
 export function isNone(thing: unknown): boolean {
   return thing === null || thing === undefined;
 }
+
+/**
+ * Sums the elements in the given list. If you pass a list of numbers, it sums
+ * them directly. If you pass a list of objects, provide the key to sum.
+ *
+ * @example
+ * sum([1, 2, 3]); // 6
+ * sum([{ x: 1 }, { x: 2 }], "x"); // 3
+ */
+export function sum(list: number[]): number;
+export function sum<T extends Record<PropertyKey, number>>(
+  list: T[],
+  key: keyof T,
+): number;
+export function sum(list: any[], key?: PropertyKey): number {
+  if (list.length === 0) return 0;
+  if (typeof list[0] === "number") {
+    return (list as number[]).reduce((a, v) => a + v, 0);
+  }
+  return (list as Record<PropertyKey, number>[]).reduce(
+    (a, v) => a + (v as any)[key!],
+    0,
+  );
+}
