@@ -8,8 +8,8 @@
  * milliseconds(1_000);
  * setTimeout(() => {}, milliseconds(3_000));
  */
-export function milliseconds(ms: number): Milliseconds {
-  return ms;
+export function milliseconds(ms: number): number {
+	return ms;
 }
 
 /**
@@ -20,8 +20,8 @@ export function milliseconds(ms: number): Milliseconds {
  * seconds(1); // 1_000
  * setTimeout(() => {}, seconds(3));
  */
-export function seconds(seconds: number): Milliseconds {
-  return seconds * 1_000;
+export function seconds(seconds: number): number {
+	return seconds * 1_000;
 }
 
 /**
@@ -32,8 +32,8 @@ export function seconds(seconds: number): Milliseconds {
  * minutes(1); // 60_000
  * setTimeout(() => {}, minutes(2)); // 120_000
  */
-export function minutes(minutes: number): Milliseconds {
-  return minutes * seconds(60);
+export function minutes(minutes: number): number {
+	return minutes * seconds(60);
 }
 
 /**
@@ -44,8 +44,8 @@ export function minutes(minutes: number): Milliseconds {
  * hours(1);   // 3_600_000
  * setTimeout(() => {}, hours(2)); // 7_200_000
  */
-export function hours(hours: number): Milliseconds {
-  return hours * minutes(60);
+export function hours(hours: number): number {
+	return hours * minutes(60);
 }
 
 /**
@@ -56,8 +56,6 @@ export function hours(hours: number): Milliseconds {
  * days(1);   // 86_400_000
  * setTimeout(() => {}, days(3)); // 259_200_000
  */
-export function days(days: number): Milliseconds {
-  return days * hours(24);
+export function days(days: number): number {
+	return days * hours(24);
 }
-
-type Milliseconds = number;

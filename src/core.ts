@@ -1,5 +1,5 @@
 import { isWhitespace, lower } from "./strings";
-import type { NonEmptyList, UnknownList } from "./types";
+import type { NonEmptyList, OneOrMany } from "./types";
 
 /**
  * Compares two things by turning them into strings,
@@ -14,7 +14,7 @@ import type { NonEmptyList, UnknownList } from "./types";
  * isEqual(false, "FALSE"); // false
  */
 export function isEqual(thing1: unknown, thing2: unknown): boolean {
-  return stringify(thing1) === stringify(thing2);
+	return stringify(thing1) === stringify(thing2);
 }
 
 /**
@@ -30,10 +30,8 @@ export function isEqual(thing1: unknown, thing2: unknown): boolean {
  */
 export function first<T>(list: NonEmptyList<T>): T;
 export function first(value: string): string;
-export function first<T>(
-  value: string | NonEmptyList<T>,
-): T | string | undefined {
-  return value[0];
+export function first<T>(value: string | NonEmptyList<T>): T | string | undefined {
+	return value[0];
 }
 
 /**
@@ -49,10 +47,8 @@ export function first<T>(
  */
 export function last<T>(list: NonEmptyList<T>): T;
 export function last(value: string): string;
-export function last<T>(
-  value: string | NonEmptyList<T>,
-): T | string | undefined {
-  return value[value.length - 1];
+export function last<T>(value: string | NonEmptyList<T>): T | string | undefined {
+	return value[value.length - 1];
 }
 
 /**
@@ -70,7 +66,7 @@ export function last<T>(
  * isNotEqual(false, "FALSE"); // false
  */
 export function isNotEqual(thing1: unknown, thing2: unknown): boolean {
-  return !isEqual(thing1, thing2);
+	return !isEqual(thing1, thing2);
 }
 
 /**
@@ -87,10 +83,10 @@ export function isNotEqual(thing1: unknown, thing2: unknown): boolean {
  * isEqualIgnoreCase(false, "FALSE"); // true
  */
 export function isEqualIgnoreCase(thing1: unknown, thing2: unknown): boolean {
-  thing1 = lower(stringify(thing1));
-  thing2 = lower(stringify(thing2));
+	thing1 = lower(stringify(thing1));
+	thing2 = lower(stringify(thing2));
 
-  return thing1 === thing2;
+	return thing1 === thing2;
 }
 
 /**
@@ -106,11 +102,8 @@ export function isEqualIgnoreCase(thing1: unknown, thing2: unknown): boolean {
  * isNotEqualIgnoreCase(false, " false "); // true
  * isNotEqualIgnoreCase(false, "FALSE"); // false
  */
-export function isNotEqualIgnoreCase(
-  thing1: unknown,
-  thing2: unknown,
-): boolean {
-  return !isEqualIgnoreCase(thing1, thing2);
+export function isNotEqualIgnoreCase(thing1: unknown, thing2: unknown): boolean {
+	return !isEqualIgnoreCase(thing1, thing2);
 }
 
 /**
@@ -126,7 +119,7 @@ export function isNotEqualIgnoreCase(
  * stringify(1); // "1"
  */
 export function stringify(thing: unknown): string {
-  return typeof thing === "object" ? JSON.stringify(thing) : String(thing);
+	return typeof thing === "object" ? JSON.stringify(thing) : String(thing);
 }
 
 /**
@@ -146,14 +139,14 @@ export function stringify(thing: unknown): string {
  * bool("Hello World"); // true
  */
 export function bool(thing: unknown): boolean {
-  return Boolean(thing);
+	return Boolean(thing);
 }
 
 /**
  * Clones the given thing. This is an alias for `structuredClone`.
  */
 export function clone<T>(thing: T): T {
-  return structuredClone(thing);
+	return structuredClone(thing);
 }
 
 /**
@@ -172,12 +165,10 @@ export function clone<T>(thing: T): T {
 export function reverse(thing: string): string;
 export function reverse<T>(thing: T[]): T[];
 export function reverse<T>(thing: Set<T>): Set<T>;
-export function reverse<T>(
-  thing: string | Set<T> | T[],
-): string | Set<T> | T[] {
-  if (typeof thing === "string") return thing.split("").reverse().join("");
-  if (thing instanceof Set) return new Set([...thing].reverse());
-  return thing.reverse();
+export function reverse<T>(thing: string | Set<T> | T[]): string | Set<T> | T[] {
+	if (typeof thing === "string") return thing.split("").reverse().join("");
+	if (thing instanceof Set) return new Set([...thing].reverse());
+	return thing.reverse();
 }
 
 /**
@@ -197,19 +188,16 @@ export function reverse<T>(
  * isEmpty(new Set()); // true
  * isEmpty({}); // true
  * isEmpty(new Map()); // true
- * isEmpty(wrap(null)); // true
- * isEmpty(wrap('')); // false
- * isEmpty(wrap(' ')); // false
  */
-export function isEmpty(thing: UnknownList): boolean;
+export function isEmpty(thing: unknown[]): boolean;
 export function isEmpty(thing: unknown): boolean;
-export function isEmpty(thing: string | UnknownList | unknown): boolean {
-  if (isNone(thing)) return true;
-  if (typeof thing === "string") return isWhitespace(thing);
-  if (Array.isArray(thing)) return thing.length === 0;
-  if (thing instanceof Map || thing instanceof Set) return thing.size === 0;
-  if (typeof thing === "object") return Object.keys(thing!).length === 0;
-  return false;
+export function isEmpty(thing: string | OneOrMany<unknown>): boolean {
+	if (isNone(thing)) return true;
+	if (typeof thing === "string") return isWhitespace(thing);
+	if (Array.isArray(thing)) return thing.length === 0;
+	if (thing instanceof Map || thing instanceof Set) return thing.size === 0;
+	if (typeof thing === "object") return Object.keys(thing!).length === 0;
+	return false;
 }
 
 /**
@@ -226,10 +214,10 @@ export function isEmpty(thing: string | UnknownList | unknown): boolean {
  * isNotEmpty({}); // false
  * isNotEmpty(new Map()); // false
  */
-export function isNotEmpty(thing: UnknownList): boolean;
+export function isNotEmpty(thing: unknown[]): boolean;
 export function isNotEmpty(thing: unknown): boolean;
-export function isNotEmpty(thing: string | UnknownList | unknown): boolean {
-  return !isEmpty(thing);
+export function isNotEmpty(thing: string | OneOrMany<unknown>): boolean {
+	return !isEmpty(thing);
 }
 
 /**
@@ -242,7 +230,7 @@ export function isNotEmpty(thing: string | UnknownList | unknown): boolean {
  * unique(myList); // [1, 2, 3];
  */
 export function unique<T>(list: T[]): T[] {
-  return [...new Set(list)];
+	return [...new Set(list)];
 }
 
 /**
@@ -255,7 +243,7 @@ export function unique<T>(list: T[]): T[] {
  * distinct(myList); // [1, 2, 3];
  */
 export function distinct<T>(list: T[]): T[] {
-  return unique(list);
+	return unique(list);
 }
 
 /**
@@ -272,7 +260,7 @@ export function distinct<T>(list: T[]): T[] {
  * console.log(sample([])); // undefined
  */
 export function sample<T>(list: NonEmptyList<T>): T | undefined {
-  return list[Math.floor(Math.random() * list.length)];
+	return list[Math.floor(Math.random() * list.length)];
 }
 
 /**
@@ -285,7 +273,7 @@ export function sample<T>(list: NonEmptyList<T>): T | undefined {
  * rand(3, 7); // 3 -> 6
  */
 export function rand(start: number, end: number): number {
-  return Math.floor(Math.random() * (end - start)) + start;
+	return Math.floor(Math.random() * (end - start)) + start;
 }
 
 /**
@@ -297,7 +285,7 @@ export function rand(start: number, end: number): number {
  * truthy(''); // false
  */
 export function truthy(thing: unknown): boolean {
-  return Boolean(thing) === true;
+	return Boolean(thing) === true;
 }
 
 /**
@@ -309,7 +297,7 @@ export function truthy(thing: unknown): boolean {
  * falsy(''); // true
  */
 export function falsy(thing: unknown): boolean {
-  return !truthy(thing);
+	return !truthy(thing);
 }
 
 /**
@@ -322,7 +310,7 @@ export function falsy(thing: unknown): boolean {
  * isSome({}); // true
  */
 export function isSome(thing: unknown): boolean {
-  return !isNone(thing);
+	return !isNone(thing);
 }
 
 /**
@@ -335,7 +323,7 @@ export function isSome(thing: unknown): boolean {
  * isNone(0); // false
  */
 export function isNone(thing: unknown): boolean {
-  return thing === null || thing === undefined;
+	return thing === null || thing === undefined;
 }
 
 /**
@@ -347,17 +335,11 @@ export function isNone(thing: unknown): boolean {
  * sum([{ x: 1 }, { x: 2 }], "x"); // 3
  */
 export function sum(list: number[]): number;
-export function sum<T extends Record<PropertyKey, number>>(
-  list: T[],
-  key: keyof T,
-): number;
+export function sum<T extends Record<PropertyKey, number>>(list: T[], key: keyof T): number;
 export function sum(list: any[], key?: PropertyKey): number {
-  if (list.length === 0) return 0;
-  if (typeof list[0] === "number") {
-    return (list as number[]).reduce((a, v) => a + v, 0);
-  }
-  return (list as Record<PropertyKey, number>[]).reduce(
-    (a, v) => a + (v as any)[key!],
-    0,
-  );
+	if (list.length === 0) return 0;
+	if (typeof list[0] === "number") {
+		return (list as number[]).reduce((a, v) => a + v, 0);
+	}
+	return (list as Record<PropertyKey, number>[]).reduce((a, v) => a + (v as any)[key!], 0);
 }

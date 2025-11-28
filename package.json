@@ -1,36 +1,36 @@
 {
-  "name": "@bytebury/sauce",
-  "version": "2.1.0",
-  "description": "🍅 a strongly typed and safe utility library to bring correctness and security to your TypeScript applications.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "npm run build",
-    "test": "vitest run --coverage",
-    "test:watch": "vitest",
-    "docs": "typedoc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bytebury/sauce.git"
-  },
-  "keywords": [],
-  "author": "bytebury <bytebury@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bytebury/sauce/issues"
-  },
-  "homepage": "https://github.com/bytebury/sauce#readme",
-  "devDependencies": {
-    "@types/node": "^24.6.2",
-    "@vitest/coverage-v8": "^3.2.4",
-    "tsup": "^8.5.0",
-    "typedoc": "^0.28.13",
-    "typescript": "^5.9.3",
-    "vitest": "^3.2.4"
-  }
+	"name": "@bytebury/sauce",
+	"version": "2.2.0",
+	"description": "🍅 a strongly typed and safe utility library to bring correctness and security to your TypeScript applications.",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc",
+		"prepublishOnly": "npm run build",
+		"test": "vitest run --coverage",
+		"test:watch": "vitest",
+		"docs": "typedoc"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bytebury/sauce.git"
+	},
+	"keywords": [],
+	"author": "bytebury <bytebury@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/bytebury/sauce/issues"
+	},
+	"homepage": "https://github.com/bytebury/sauce#readme",
+	"devDependencies": {
+		"@types/node": "^24.6.2",
+		"@vitest/coverage-v8": "^3.2.4",
+		"tsup": "^8.5.0",
+		"typedoc": "^0.28.13",
+		"typescript": "^5.9.3",
+		"vitest": "^3.2.4"
+	}
 }

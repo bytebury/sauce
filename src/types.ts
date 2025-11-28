@@ -29,7 +29,7 @@ export type AutoComplete<T extends string> = T | (string & UnknownRecord);
  *   // param would be: "apple" | "banana" | "orange"
  * }
  */
-export type KeyOf<T> = T extends UnknownList ? ValueOf<T> : keyof T;
+export type KeyOf<T> = T extends unknown[] ? ValueOf<T> : keyof T;
 
 /**
  * This is a utility type that allows you to get the values from an object
@@ -47,25 +47,13 @@ export type KeyOf<T> = T extends UnknownList ? ValueOf<T> : keyof T;
  *   // param would be: "apple" | "banana" | "orange"
  * }
  */
-export type ValueOf<T> = T extends UnknownList ? T[number] : T[keyof T];
+export type ValueOf<T> = T extends unknown[] ? T[number] : T[keyof T];
 
 /**
  * Represents an object with `unknown` value. This is typically
  * a better usecase than just using `{}`.
  */
 export type UnknownRecord = Record<PropertyKey, unknown>;
-
-/**
- * Represents a list with `unknown` values. Useful for when you
- * want a type that all lists can be assigned to, but you don't care
- * about the value.
- */
-export type UnknownList = unknown[];
-
-/**
- * Represents a set with `unknown` values.
- */
-export type UnknownSet = Set<unknown>;
 
 /**
  * Represents an `unknown` Map
@@ -75,14 +63,7 @@ export type UnknownMap = Map<unknown, unknown>;
 /**
  * Represents any primitive ECMAScript value.
  */
-export type Primitive =
-  | string
-  | number
-  | boolean
-  | bigint
-  | symbol
-  | null
-  | undefined;
+export type Primitive = string | number | boolean | bigint | symbol | null | undefined;
 
 /**
  * Represents when there can be one or many of someting
@@ -104,11 +85,6 @@ export type Nullish<T> = T | None;
  * more readable for the developer.
  */
 export type Prettify<T> = { [K in keyof T]: T[K] } & {};
-
-/**
- * Represents a byte unit.
- */
-export type ByteUnit = "KB" | "MB" | "GB" | "TB" | "TB";
 
 /**
  * Syntactic sugar for `null | undefined`.
