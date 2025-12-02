@@ -14,7 +14,7 @@ npm i --save @bytebury/sauce
 ```ts
 import { isWhitespace, title } from "@bytebury/sauce";
 
-function sayHelloTo(name?: string): void {
+function sayHelloTo(name: string): void {
   if (isWhitespace(name)) {
     console.log("Hello, Guest");
   } else {
